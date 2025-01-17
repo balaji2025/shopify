@@ -4,11 +4,10 @@ const vendorModel = require("../models/vendor");
 class Vendor {
     async getAllVendor(req, res) {
         try {
-            console.log("123");
             let vendor = await vendorModel.find();
-            console.log(vendor);
+            // let obj = {allVendor: vendor}
             if(vendor) {
-                return res.json({vendor});
+                return res.json(vendor);
             }
         } catch(error) {
             console.log(error);
@@ -17,13 +16,13 @@ class Vendor {
     
     // TODO: getVendorByID to implement i've to check the type to validate data
     async getVendorByID(req, res) {
-        let {vId} = req.body;
-        if (!vId) {
+        let {id} = req.params;
+        if (!id) {
             return res.status(400).json({ error: "Vendor ID is required"})
         }
         try {
-            let vendorById = await vendorModel.findById(vId);
-            return res.json({vendorById});
+            let vendorById = await vendorModel.findById(id);
+            return res.json(vendorById);
         } catch (error) {
             console.log(error);
         }
@@ -49,11 +48,11 @@ class Vendor {
                 address,
                 gstNo,
                 mobileNo,
-                alternatMobileNo
+                alternateMobileNo
             });
     
             await newVendor.save();
-            res.statu(201).json({ message: "Vendor added sucessfully", vendor: newVendor});
+            res.status(201).json(newVendor);
         } catch (error) {
             console.error("Error adding vendor", error);
             res.status(500).json({ error: "Internal server error"})
@@ -63,12 +62,13 @@ class Vendor {
 
     //i've to change put
     async putEditVendor(req, res) {
+        let {id} = req.params;
         let {vendorName, email, address, gstNo, mobileNo} = req.body;
         if (!vendorName || !email || !address || !gstNo || !mobileNo) {
             return res.status(400).json({ error: "All fields are required!" });
         }
         try {
-            let editVendor = await vendorModel.findByIdAndUpdate(vId, {
+            let editVendor = await vendorModel.findByIdAndUpdate(id, {
                 vendorName,
                 email,
                 address,
@@ -76,24 +76,26 @@ class Vendor {
                 mobileNo,
                 updatedAt: Date.now()
             });
-            let edit = await editVendor.exec();
+            let edit = await editVendor.save();
             if (edit) {
-                return res.json({ success: "Vendor edit successfully" });
-              }
+                return res.json(edit);
+            }
         } catch (error) {
             console.error(error);
         }
     }
 
-    async getDeleteVendor(req, res) {
+    async deleteVendor(req, res) {
+        console.log("123s")
         try {
-            let { vId } = req.body;
+            let { id } = req.params;
+            console.log(id);
     
-            if (!vId) {
+            if (!id) {
                 return res.status(400).json({ error: "Vendor ID is required!" });
             }
     
-            let deletedVendor = await vendorModel.findByIdAndDelete(vId);
+            let deletedVendor = await vendorModel.findByIdAndDelete(id);
     
             if (deletedVendor) {
                 return res.status(200).json({ message: "Vendor deleted successfully!", vendor: deletedVendor });

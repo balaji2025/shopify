@@ -5,10 +5,10 @@ const userModel = require("../models/users");
 exports.loginCheck = (req, res, next) => {
   try {
     // console.log("token");
-    console.log(req.headers.token);
+    // console.log(req.headers.token);
     let token = req.headers.authorization;
     let t  = (req.headers.token != undefined) ?  req.headers.token : req.headers.authorization;
-    // console.log(token);
+    console.log(t);
     token = t.replace("Bearer ", "");
     decode = jwt.verify(token, JWT_SECRET);
     req.userDetails = decode;

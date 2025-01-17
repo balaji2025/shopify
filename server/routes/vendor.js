@@ -4,9 +4,10 @@ const vendorController = require("../controller/vendor");
 const { loginCheck } = require("../middleware/auth");
 // const obj = { }
 
-router.get("/all-vendor", loginCheck, vendorController.getAllVendor);
-router.post("/create-vendor", loginCheck, vendorController.postAddVendor);
-router.put("/edit-vendor", loginCheck, vendorController.putEditVendor);
-router.delete("/delete-vendor", loginCheck, vendorController.getDeleteVendor);
+router.get("/all", loginCheck, vendorController.getAllVendor);
+router.post("/", loginCheck, vendorController.postAddVendor);
+router.put("/:id", loginCheck, vendorController.putEditVendor);
+router.delete("/byId/:id ", loginCheck, vendorController.deleteVendor);
+router.get("/byId/:id", loginCheck, vendorController.getVendorByID);
 
 module.exports = router;
