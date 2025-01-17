@@ -26,6 +26,7 @@ export const createVendor = async ({
     vendorName,
     email,
     address,
+    status,
     gstNo,
     mobileNo,
     alternateMobileNo
@@ -34,6 +35,7 @@ export const createVendor = async ({
     formData.append("vendorName", vendorName);
     formData.append("email", email);
     formData.append("address", address);
+    formData.append("status", status);
     formData.append("gstNo", gstNo);
     formData.append("mobileNo", mobileNo);
     formData.append("alternateMobileNo", alternateMobileNo);
@@ -54,11 +56,12 @@ export const editVendor = async ({
     vendorName,
     email,
     address,
+    status,
     gstNo,
     mobileNo,
     alternateMobileNo
 }) => {
-    let data = { id: id, vendorName: vendorName, email: email, address: address, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo };
+    let data = { id: id, vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo };
     try {
         let result = await axios.put(`${apiURL}/api/vendor/edit-vendor`, data, Headers());
         return result.data;
@@ -79,6 +82,7 @@ export const deleteVendorById = async (id) => {
 export const getVendorById = async (id) => {
     try {
         let result  = await axios.get(`${apiURL}/api/vendor/byId`, {id}, Headers());
+        return result.data;
     } catch (error) {
         console.log(error);
     }

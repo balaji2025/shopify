@@ -29,9 +29,9 @@ class Vendor {
     }
 
     async postAddVendor(req, res) {
-        let {vendorName, email, address, gstNo, mobileNo, alternateMobileNo} = req.body;
+        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo, createdAt} = req.body;
         try {
-            if (!vendorName || !email || !address || !gstNo || !mobileNo || !alternateMobileNo) {
+            if (!vendorName || !email || !address ||!status ||!gstNo || !mobileNo || !alternateMobileNo ||!createdAt) {
                 return res.status(400).json({ error: "All fields are required!" });
             }
     
@@ -46,9 +46,11 @@ class Vendor {
                 vendorName,
                 email,
                 address,
+                status,
                 gstNo,
                 mobileNo,
-                alternateMobileNo
+                alternateMobileNo,
+                createdAt
             });
     
             await newVendor.save();
@@ -63,17 +65,19 @@ class Vendor {
     //i've to change put
     async putEditVendor(req, res) {
         let {id} = req.params;
-        let {vendorName, email, address, gstNo, mobileNo} = req.body;
-        if (!vendorName || !email || !address || !gstNo || !mobileNo) {
-            return res.status(400).json({ error: "All fields are required!" });
+        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo} = req.body;
+        if (!vendorName || !email ||!status || !gstNo || !mobileNo ||!alternateMobileNo) {
+            return res.status(400).json({ error: "Required Filed Must Not Be Empty!" });
         }
         try {
             let editVendor = await vendorModel.findByIdAndUpdate(id, {
                 vendorName,
                 email,
                 address,
+                status,
                 gstNo,
                 mobileNo,
+                alternateMobileNo,
                 updatedAt: Date.now()
             });
             let edit = await editVendor.save();
@@ -86,24 +90,28 @@ class Vendor {
     }
 
     async deleteVendor(req, res) {
-        console.log("123s")
+        
+        let { id } = req.params;
         try {
-            let { id } = req.params;
             console.log(id);
     
             if (!id) {
-                return res.status(400).json({ error: "Vendor ID is required!" });
+                return res.status(400).json({ error: "Vendor ID is required and You can only change the status of the vendor!" });
+            }
+            
+            let deletedVendor = await vendorModel.findById(id);
+            if (deletedVendor.status == "Active") {
+                deletedVendor.status = "Inactive";
+                deletedVendor.updatedAt = Date.now();
             }
     
-            let deletedVendor = await vendorModel.findByIdAndDelete(id);
-    
             if (deletedVendor) {
-                return res.status(200).json({ message: "Vendor deleted successfully!", vendor: deletedVendor });
+                return res.status(200).json({ message: "Changed the vendor status to Inactive!"});
             } else {
                 return res.status(404).json({ error: "Vendor not found!" });
             }
         } catch (error) {
-            console.error("Error deleting vendor:", error);
+            console.error("Error When Changing The Vendor Status:", error);
             return res.status(500).json({ error: "Internal server error!" });
         }
     }

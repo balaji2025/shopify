@@ -15,6 +15,15 @@ const vendorSchema = new mongoose.Schema ({
     address: {
         type: String,
     },
+    status: {
+        type: String,
+        default: "Active",
+        enum: [
+            "Inactive",
+            "Active"
+        ],
+        required: true
+    },
     gstNo: {
         type: String, 
         required: true,
@@ -26,6 +35,13 @@ const vendorSchema = new mongoose.Schema ({
     alternateMobileNo: {
         type: Number,
         require: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
+    comments: {
+        type: String,
     }
 },
 { timestamps: true });

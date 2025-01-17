@@ -36,7 +36,7 @@ const vendorRouter = require("./routes/vendor");
 // Import Auth middleware for check user login or not~
 const { loginCheck } = require("./middleware/auth");
 const CreateAllFolder = require("./config/uploadFolderCreateScript");
-const vendor = require("./controller/vendor");
+// const vendor = require("./controller/vendor");
 
 /* Create All Uploads Folder if not exists | For Uploading Images */
 CreateAllFolder();

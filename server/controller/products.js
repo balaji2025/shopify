@@ -1,6 +1,9 @@
 const productModel = require("../models/products");
+const vendorModel = require("../models/vendor");
 const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose")
+const { ObjectId } = mongoose.Types;
 
 class Product {
   // Delete Image from uploads -> products folder
@@ -32,6 +35,7 @@ class Product {
       let Products = await productModel
         .find({})
         .populate("pCategory", "_id cName")
+        .populate("vendor", "_id vendorName")
         .sort({ _id: -1 });
       if (Products) {
         return res.json({ Products });
@@ -42,58 +46,70 @@ class Product {
   }
 
   async postAddProduct(req, res) {
-    let { pName, pDescription, pPrice, pQuantity, pCategory, pVendor, pOffer, pStatus } =  req.body;
+    let { pName, pDescription, pPrice, pQuantity, pCategory, productVendor, pOffer, pStatus } = req.body;
     let images = req.files;
     // Validation
-    if (
-      !pName |
-      !pDescription |
-      !pPrice |
-      !pQuantity |
-      !pCategory |
-      !pVendor |
-      !pOffer |
-      !pStatus
-    ) {
-      Product.deleteImages(images, "file");
-      return res.json({ error: "All filled must be required" });
-    }
-    // Validate Name and description
-    else if (pName.length > 255 || pDescription.length > 3000) {
-      Product.deleteImages(images, "file");
-      return res.json({
-        error: "Name 255 & Description must not be 3000 charecter long",
-      });
-    }
-    // Validate Images
-    else if (images.length !== 2) {
-      Product.deleteImages(images, "file");
-      return res.json({ error: "Must need to provide 2 images" });
-    } else {
-      try {
-        let allImages = [];
-        for (const img of images) {
-          allImages.push(img.filename);
-        }
-        let newProduct = new productModel({
-          pImages: allImages,
-          pName,
-          pDescription,
-          pPrice,
-          pQuantity,
-          pCategory,
-          pVendor,
-          pOffer,
-          pStatus,
+    try {
+      // Validate vendor
+      const vendor = "678a1cda35a10525e4780e47";
+      const id = JSON.stringify(vendor);
+      console.log(id);
+      const activeVendor = await vendorModel.findOne({ _id: ObjectId(vendor) });
+      // console.log(activeVendor);
+      if (!activeVendor) {
+        return res.status(400).json({ error: "Vendor is not active or invalid" });
+      }
+  
+      // Validate fields
+      if (
+        !pName || 
+        !pDescription || 
+        !pPrice || 
+        !pQuantity || 
+        !pCategory || 
+        !productVendor || 
+        !pOffer || 
+        !pStatus
+      ) {
+        Product.deleteImages(images, "file");
+        return res.status(400).json({ error: "All fields must be provided" });
+      }
+  
+      // Validate Name and Description Length
+      if (pName.length > 255 || pDescription.length > 3000) {
+        Product.deleteImages(images, "file");
+        return res.status(400).json({
+          error: "Name must not exceed 255 characters, and Description must not exceed 3000 characters",
         });
-        let save = await newProduct.save();
-        if (save) {
-          return res.json({ success: "Product created successfully" });
-        }
-      } catch (err) {
+      }
+  
+      // Validate Images
+      if (!images || images.length !== 2) {
+        Product.deleteImages(images, "file");
+        return res.status(400).json({ error: "Exactly 2 images must be provided" });
+      }
+  
+      // Prepare images
+      const allImages = images.map(img => img.filename);
+  
+      // Save product
+      const newProduct = new productModel({
+        pImages: allImages,
+        pName,
+        pDescription,
+        pPrice,
+        pQuantity,
+        pCategory,
+        productVendor,
+        pOffer,
+        pStatus,
+      });
+  
+      const savedProduct = await newProduct.save();
+      return res.status(201).json( savedProduct );
+    } catch (err) {
         console.log(err);
       }
-    }
   }
 
   async postEditProduct(req, res) {
@@ -104,7 +120,7 @@ class Product {
       pPrice,
       pQuantity,
       pCategory,
-      pVendor,
+      productVendor,
       pOffer,
       pStatus,
       pImages,
@@ -119,7 +135,7 @@ class Product {
       !pPrice |
       !pQuantity |
       !pCategory |
-      !pVendor |
+      !productVendor |
       !pOffer |
       !pStatus
     ) {
@@ -142,7 +158,7 @@ class Product {
         pPrice,
         pQuantity,
         pCategory,
-        pVendor,
+        productVendor,
         pOffer,
         pStatus,
       };
