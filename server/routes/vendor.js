@@ -7,7 +7,7 @@ const { loginCheck } = require("../middleware/auth");
 router.get("/all", loginCheck, vendorController.getAllVendor);
 router.post("/", loginCheck, vendorController.postAddVendor);
 router.put("/:id", loginCheck, vendorController.putEditVendor);
-router.delete("/byId/:id ", loginCheck, vendorController.deleteVendor);
+router.delete("/byId/:id", loginCheck, vendorController.deleteVendor);
 router.get("/byId/:id", loginCheck, vendorController.getVendorByID);
 
 module.exports = router;
