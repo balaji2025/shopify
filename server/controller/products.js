@@ -51,10 +51,13 @@ class Product {
     // Validation
     try {
       // Validate vendor
-      const vendor = "678a1cda35a10525e4780e47";
-      const id = JSON.stringify(vendor);
-      console.log(id);
-      const activeVendor = await vendorModel.findOne({ _id: ObjectId(vendor) });
+      // const vendor = "678a1cda35a10525e4780e47";
+      // const id = JSON.stringify(vendor);
+      // console.log(id);
+      console.log(String(productVendor));
+      const v = String(productVendor);
+      console.log(typeof(v));
+      const activeVendor = await vendorModel.findOne({ _id: ObjectId(v) });
       // console.log(activeVendor);
       if (!activeVendor) {
         return res.status(400).json({ error: "Vendor is not active or invalid" });
