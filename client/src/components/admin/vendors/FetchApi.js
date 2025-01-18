@@ -29,7 +29,9 @@ export const createVendor = async ({
     status,
     gstNo,
     mobileNo,
-    alternateMobileNo
+    alternateMobileNo,
+    createdAt,
+    comments
 }) => {
     let formData = new FormData();
     formData.append("vendorName", vendorName);
@@ -39,6 +41,8 @@ export const createVendor = async ({
     formData.append("gstNo", gstNo);
     formData.append("mobileNo", mobileNo);
     formData.append("alternateMobileNo", alternateMobileNo);
+    formData.append("createdAt", createdAt);
+    formData.append("comments", comments);
     try {
         let result = await axios.post(
             `${apiURL}/api/vendor/create-vendor`,
@@ -59,9 +63,10 @@ export const editVendor = async ({
     status,
     gstNo,
     mobileNo,
-    alternateMobileNo
+    alternateMobileNo,
+    comments
 }) => {
-    let data = { id: id, vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo };
+    let data = { id: id, vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo, comments:comments };
     try {
         let result = await axios.put(`${apiURL}/api/vendor/edit-vendor`, data, Headers());
         return result.data;
