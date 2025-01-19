@@ -11,7 +11,8 @@ const VendorComponent = () => {
   return (
     <div className="grid grid-cols-1 space-y-4 p-4">
       {/* <VendorMenu /> */}
-      <vendorTable />
+      {/* <vendorTable /> */}
+      <h1>vendors works...!</h1>
     </div>
   );
 };
@@ -26,6 +27,7 @@ const Vendors = (props) => {
         <AdminLayout children={<VendorComponent />} />
       </VendorContext.Provider>
     </Fragment>
+    
   );
 };
 
