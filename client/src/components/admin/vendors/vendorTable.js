@@ -3,7 +3,7 @@ import { getAllVendor, deleteVendorById } from "./FetchApi";
 import moment from "moment";
 import { VendorContext } from "./index";
 
-const apiURL = process.env.REACT_APP_API_URL;
+// const apiURL = process.env.REACT_APP_API_URL;
 
 const AllVendor = (props) => {
   const { data, dispatch } = useContext(VendorContext);
@@ -30,7 +30,7 @@ const AllVendor = (props) => {
     }, 1000);
   };
 
-  const deleteVendorReq = async (id) => {
+  const deleteVendor = async (id) => {
     let deleteVendor = await deleteVendorById(id);
     if (deleteVendor.error) {
       console.log(deleteVendor.error);
@@ -97,9 +97,9 @@ const AllVendor = (props) => {
                   <VendorTable
                     vendor={item}
                     editVendor={(id, vendor, type) =>
-                        editVendor(id, vendor, type)
+                      editVendor(id, vendor, type)
                     }
-                    deleteVendor={(id) => deleteVendorReq(id)}
+                    deleteVendor={(id) => deleteVendor(id)}
                     key={key}
                   />
                 );

@@ -1,6 +1,7 @@
 import React, { Fragment, createContext, useReducer } from "react";
 import AdminLayout from "../layout";
-import vendorTable from "./vendorTable";
+import VendorMenu from "./VendorMenu";
+import VendorTable from "./VendorTable";
 import { vendorState, vendorReducer } from "./VendorContext";
 
 
@@ -10,8 +11,8 @@ export const VendorContext = createContext();
 const VendorComponent = () => {
   return (
     <div className="grid grid-cols-1 space-y-4 p-4">
-      {/* <VendorMenu /> */}
-      <vendorTable />
+      <VendorMenu />
+      <VendorTable />
     </div>
   );
 };

@@ -2,200 +2,212 @@ import React, { Fragment, useContext, useEffect } from "react";
 import moment from "moment";
 
 import { VendorContext } from "./index";
-import { fetchData, editVendorReq, deleteVendorReq } from "./Actions";
-import AllVendor from "./vendorTable";
+import { getAllVendor, deleteVendorById } from "./Actions";
+import AllVendor from "./VendorTable";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
-const AllCategory = (props) => {
-  const { data, dispatch } = useContext(OrderContext);
-  const { orders, loading } = data;
+const AllVendor = (props) => {
+const { data, dispatch } = useContext(VendorContext);
+const { vendor, loading } = data;
 
-  useEffect(() => {
-    fetchData(dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+useEffect(() => {
+fetchData(dispatch);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <svg
-          className="w-12 h-12 animate-spin text-gray-600"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          ></path>
-        </svg>
-      </div>
-    );
+const fetchData = async () => {
+  dispatch({ type: "loading", payload: true });
+  let responseData = await getAllVendor();
+  setTimeout(() => {
+    if (responseData && responseData.Vendors) {
+      dispatch({
+        type: "fetchCategoryAndChangeState",
+        payload: responseData.Vendors,
+      });
+      dispatch({ type: "loading", payload: false });
+    }
+  }, 1000);
+};
+
+const deleteVendorReq = async (cId) => {
+let deleteVendor = await deleteVendorById(cId);
+if (deleteVendor.error) {
+  console.log(deleteVendor.error);
+} else if (deleteVendor.success) {
+  console.log(deleteVendor.success);
+  fetchData();
+}
+};
+
+/* This method call the editmodal & dispatch vendor context */
+const editVendor = (id, vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo) => {
+  if (type) {
+    dispatch({
+      type: "editVendorModalOpen",
+      id: id,
+      vendorName: vendorName,
+      email: email,
+      address: address,
+      status: status,
+      gstNo: gstNo,
+      mobileNo: mobileNo,
+      alternateMobileNo: alternateMobileNo,
+      comments: comments
+    });
   }
+};
+if (loading) {
   return (
-    <Fragment>
-      <div className="col-span-1 overflow-auto bg-white shadow-lg p-4">
-        <table className="table-auto border w-full my-2">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 border">Vendors</th>
-              <th className="px-4 py-2 border">Email</th>
-              <th className="px-4 py-2 border">Address</th>
-              <th className="px-4 py-2 border">Status</th>
-              <th className="px-4 py-2 border">GstNo</th>
-              <th className="px-4 py-2 border">MobileNo</th>
-              <th className="px-4 py-2 border">AlternateMobileNo</th>
-              <th className="px-4 py-2 border">createdAt</th>
-              <th className="px-4 py-2 border">Updated at</th>
-              <th className="px-4 py-2 border">Comments</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vendor && vendor.length > 0 ? (
-              vendor.map((item, i) => {
-                return (
-                  <VendorTable
-                    key={i}
-                    vendor={item}
-                    editVendor={(id, type, status) =>
-                        editVendorReq(id, type, status, comments)
-                    }
-                  />
-                );
-              })
-            ) : (
-              <tr>
-                <td
-                  colSpan="12"
-                  className="text-xl text-center font-semibold py-8"
-                >
-                  No vendor found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        <div className="text-sm text-gray-600 mt-2">
-          Total {vendor && vendor.length} vendor found
-        </div>
-      </div>
-    </Fragment>
+    <div className="flex items-center justify-center p-8">
+      <svg
+        className="w-12 h-12 animate-spin text-gray-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+        ></path>
+      </svg>
+    </div>
   );
+}
+return (
+  <Fragment>
+    <div className="col-span-1 overflow-auto bg-white shadow-lg p-4">
+      <table className="table-auto border w-full my-2">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 border">Vendors</th>
+            <th className="px-4 py-2 border">Email</th>
+            <th className="px-4 py-2 border">Address</th>
+            <th className="px-4 py-2 border">Status</th>
+            <th className="px-4 py-2 border">GstNo</th>
+            <th className="px-4 py-2 border">MobileNo</th>
+            <th className="px-4 py-2 border">AlternateMobileNo</th>
+            <th className="px-4 py-2 border">createdAt</th>
+            <th className="px-4 py-2 border">Updated at</th>
+            <th className="px-4 py-2 border">Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          {vendor && vendor.length > 0 ? (
+            vendor.map((item, i) => {
+              return (
+                <VendorTable
+                  key={i}
+                  vendor={item}
+                  editVendor={(id, type, status) =>
+                    editVendor(id, type, status, comments)
+                  }
+                  deleteVendor={(id) => deleteVendorReq(id)}
+                  keys={key}
+                />
+              );
+            })
+          ) : (
+            <tr>
+              <td
+                colSpan="12"
+                className="text-xl text-center font-semibold py-8"
+              >
+                No vendor found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <div className="text-sm text-gray-600 mt-2">
+        Total {vendor && vendor.length} vendor found
+      </div>
+    </div>
+  </Fragment>
+);
 };
 
 /* Single Category Component */
-const vendorTable = ({ vendor, editVendor }) => {
-  const { dispatch } = useContext(VendorContext);
+const VendorTable = ({ vendor, editVendor }) => {
+const { dispatch } = useContext(VendorContext);
 
-  return (
-    <Fragment>
-      <tr className="border-b">
-        <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
-          {vendor.allVendor.map((vendor, i) => {
-            return (
-              <span className="block flex items-center space-x-2" key={i}>
-                <img
-                  className="w-8 h-8 object-cover object-center"
-                  src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
-                  alt="productImage"
-                />
-                <span>{product.id.pName}</span>
-                <span>{product.quantitiy}x</span>
-              </span>
-            );
-          })}
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center cursor-default">
-          {order.status === "Not processed" && (
-            <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
-              {order.status}
-            </span>
-          )}
-          {order.status === "Processing" && (
-            <span className="block text-yellow-600 rounded-full text-center text-xs px-2 font-semibold">
-              {order.status}
-            </span>
-          )}
-          {order.status === "Shipped" && (
-            <span className="block text-blue-600 rounded-full text-center text-xs px-2 font-semibold">
-              {order.status}
-            </span>
-          )}
-          {order.status === "Delivered" && (
-            <span className="block text-green-600 rounded-full text-center text-xs px-2 font-semibold">
-              {order.status}
-            </span>
-          )}
-          {order.status === "Cancelled" && (
-            <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
-              {order.status}
-            </span>
-          )}
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
-          ${order.amount}.00
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
-          {order.transactionId}
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center">{vendor.user.name}</td>
-        <td className="hover:bg-gray-200 p-2 text-center">
-          {vendor.user.email}
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center">{vendor.phone}</td>
-        <td className="hover:bg-gray-200 p-2 text-center">{vendor.address}</td>
-        <td className="hover:bg-gray-200 p-2 text-center">
-          {moment(vendor.createdAt).format("lll")}
-        </td>
-        <td className="hover:bg-gray-200 p-2 text-center">
-          {moment(vendor.updatedAt).format("lll")}
-        </td>
-        <td className="p-2 flex items-center justify-center">
-          <span
-            onClick={(e) => editVendor(vendor._id, true, vendor.status)}
-            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
-          >
-            <svg
-              className="w-6 h-6 fill-current text-green-500"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-              <path
-                fillRule="evenodd"
-                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                clipRule="evenodd"
-              />
-            </svg>
+return (
+  <Fragment>
+    <tr>
+      <td className="p-2 text-left">
+        {vendor.vendorName.length > 15
+          ? vendor.vendorName.substring(1, 15) + "..."
+          : vendor.vendorName}
+      </td>
+      <td className="p-2 text-left">
+        {vendor.email.slice(0, 15)}...
+      </td>
+      <td className="p-2 text-center">
+        {vendor.status === "Active" ? (
+          <span className="bg-green-200 rounded-full text-center text-xs px-2 font-semibold">
+            {vendor.status}
           </span>
-          <span
-            onClick={(e) => deleteVendorReq(vendor._id, dispatch)}
-            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
-          >
-            <svg
-              className="w-6 h-6 text-red-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
+        ) : (
+          <span className="bg-red-200 rounded-full text-center text-xs px-2 font-semibold">
+            {vendor.status}
           </span>
-        </td>
-      </tr>
-    </Fragment>
-  );
+        )}
+      </td>
+      <td className="p-2 text-center">{vendor.GstNo}</td>
+      <td className="p-2 text-center">{vendor.mobileNo}</td>
+      <td className="p-2 text-center">{vendor.alternateMobileNo}</td>
+      <td className="p-2 text-center">{vendor.createdAt}</td>
+      <td className="p-2 text-center">{vendor.updatedAt}</td>
+      <td className="p-2 text-center">{vendor.comments}</td>
+      <td className="p-2 text-center">
+        {moment(vendor.createdAt).format("lll")}
+      </td>
+      <td className="p-2 text-center">
+        {moment(vendor.updatedAt).format("lll")}
+      </td>
+      <td className="p-2 flex items-center justify-center">
+        <span
+          onClick={(e) => editVendor(vendor._id, vendor, true)}
+          className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
+        >
+          <svg
+            className="w-6 h-6 fill-current text-green-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+            <path
+              fillRule="evenodd"
+              d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </span>
+        <span
+          onClick={(e) => deleteVendor(vendor._id)}
+          className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
+        >
+          <svg
+            className="w-6 h-6 fill-current text-red-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </span>
+      </td>
+    </tr>
+  </Fragment>
+);
 };
 
 export default AllVendor;

@@ -36,23 +36,28 @@ export const vendorState = {
           ...state,
           addVendorModal: {
             modal: true,
-            id: action.vendor.pId,
+            id: action.vendor.id,
+            vendorName: action.vendor.vendorName,
             email: action.vendor.email,
+            address: action.vendor.address,
             status: action.vendor.status,
+            gstNo: action.vendor.gstNo,
             mobileNo: action.vendor.mobileNo,
             alternateMobileNo: action.vendor.alternateMobileNo,
             comments: action.vendor.comments,
           },
         };
-      case "editVendorModalOpen":
+      case "editVendorModalClose":
         return {
           ...state,
-          editProductModal: {
+          editVendorModal: {
             modal: false,
             id: "",
             vendorName: "",
             email: "",
+            address: "",
             status: "",
+            gstNo: "",
             mobileNo: "",
             alternateMobileNo: "",
             comments: "",

@@ -5,3 +5,5 @@ import { createVendor, getAllVendor} from "./FetchApi";
 const addVendor = (props) => {
     
 }
+
+export default  AddVendorModal;
