@@ -4,7 +4,7 @@ const vendorModel = require("../models/vendor");
 class Vendor {
     async getAllVendor(req, res) {
         try {
-            let vendor = await vendorModel.find();
+            let vendor = await vendorModel.find().sort({ _id: -1 });
             // let obj = {allVendor: vendor}
             if(vendor) {
                 return res.json(vendor);

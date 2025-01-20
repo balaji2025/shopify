@@ -6,6 +6,7 @@ export const vendorState = {
       id: "",
       vendorName: "",
       email: "",
+      address: "",
       status: "",
       gstNo: "",
       mobileNo: "",
@@ -19,7 +20,7 @@ export const vendorState = {
   export const vendorReducer = (state, action) => {
     switch (action.type) {
       /* Get all product */
-      case "fetchVendorAndChangeState":
+      case "fetchVendorsAndChangeState":
         return {
           ...state,
           vendors: action.payload,
@@ -36,15 +37,18 @@ export const vendorState = {
           ...state,
           addVendorModal: {
             modal: true,
-            id: action.vendor.pId,
+            id: action.vendor.id,
+            vendorName: action.vendor.vendorName,
             email: action.vendor.email,
+            address: action.vendor.address,
             status: action.vendor.status,
+            gstNo: action.vendor.gstNo,
             mobileNo: action.vendor.mobileNo,
             alternateMobileNo: action.vendor.alternateMobileNo,
             comments: action.vendor.comments,
           },
         };
-      case "editVendorModalOpen":
+      case "editVendorModalClose":
         return {
           ...state,
           editProductModal: {
@@ -52,7 +56,9 @@ export const vendorState = {
             id: "",
             vendorName: "",
             email: "",
+            address: "",
             status: "",
+            gstNo:  "",
             mobileNo: "",
             alternateMobileNo: "",
             comments: "",
@@ -62,4 +68,3 @@ export const vendorState = {
         return state;
     }
   };
-  

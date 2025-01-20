@@ -2,6 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { getAllProduct, deleteProduct } from "./FetchApi";
 import moment from "moment";
 import { ProductContext } from "./index";
+import { getAllVendor } from "../vendors/FetchApi";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -13,6 +14,7 @@ const AllProduct = (props) => {
 
   useEffect(() => {
     fetchData();
+    fetchVendorData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -29,6 +31,16 @@ const AllProduct = (props) => {
       }
     }, 1000);
   };
+
+  const fetchVendorData = async () =>  {
+    let response  = await getAllVendor();
+    if(response) {
+      dispatch({
+        type:"fetchProductsAndChangeState",
+        payload: response,
+      });
+    }
+  } ;
 
   const deleteProductReq = async (pId) => {
     let deleteC = await deleteProduct(pId);
@@ -83,6 +95,7 @@ const AllProduct = (props) => {
               <th className="px-4 py-2 border">Status</th>
               <th className="px-4 py-2 border">Stock</th>
               <th className="px-4 py-2 border">Category</th>
+              <th className="px-4 py-2 border">Vendor</th>
               <th className="px-4 py-2 border">Offer</th>
               <th className="px-4 py-2 border">Created at</th>
               <th className="px-4 py-2 border">Updated at</th>
@@ -156,6 +169,7 @@ const ProductTable = ({ product, deleteProduct, editProduct }) => {
         </td>
         <td className="p-2 text-center">{product.pQuantity}</td>
         <td className="p-2 text-center">{product.pCategory.cName}</td>
+        <td className="p-2 text-center">{product.vendor.vendorName}</td>
         <td className="p-2 text-center">{product.pOffer}</td>
         <td className="p-2 text-center">
           {moment(product.createdAt).format("lll")}

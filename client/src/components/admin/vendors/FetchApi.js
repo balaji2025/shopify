@@ -15,7 +15,7 @@ const Headers = () => {
 
 export const getAllVendor = async () => {
     try {
-        let res = await axios.get(`${apiURL}/api/vendor/all-vendor`, Headers());
+        let res = await axios.get(`${apiURL}/api/vendor/all`, Headers());
         return res.data;
     } catch (error) {
         console.log(error);
