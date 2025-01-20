@@ -2,12 +2,15 @@ import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ProductContext } from "./index";
 import { editProduct, getAllProduct } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
+import { getAllVendor } from "../vendors/FetchApi";
+
 const apiURL = process.env.REACT_APP_API_URL;
 
 const EditProductModal = (props) => {
   const { data, dispatch } = useContext(ProductContext);
 
   const [categories, setCategories] = useState(null);
+  const [vendors, setVendors] = useState(null);
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
@@ -21,6 +24,7 @@ const EditProductModal = (props) => {
     pEditImages: null,
     pStatus: "",
     pCategory: "",
+    pVendor: "",
     pQuantity: "",
     pPrice: "",
     pOffer: "",
@@ -30,6 +34,7 @@ const EditProductModal = (props) => {
 
   useEffect(() => {
     fetchCategoryData();
+    fetchVendorData();
   }, []);
 
   const fetchCategoryData = async () => {
@@ -39,6 +44,13 @@ const EditProductModal = (props) => {
     }
   };
 
+  const fetchVendorData = async () => {
+    let responseData = await getAllVendor();
+    if (responseData) {
+      setVendors(responseData);
+    }
+  }
+
   useEffect(() => {
     setEditformdata({
       pId: data.editProductModal.pId,
@@ -47,6 +59,7 @@ const EditProductModal = (props) => {
       pImages: data.editProductModal.pImages,
       pStatus: data.editProductModal.pStatus,
       pCategory: data.editProductModal.pCategory,
+      pVendor: data.editProductModal.pVendor,
       pQuantity: data.editProductModal.pQuantity,
       pPrice: data.editProductModal.pPrice,
       pOffer: data.editProductModal.pOffer,
@@ -301,6 +314,55 @@ const EditProductModal = (props) => {
                                 key={elem._id}
                               >
                                 {elem.cName}
+                              </option>
+                            )}
+                          </Fragment>
+                        );
+                      })
+                    : ""}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+              <label htmlFor="quantity">Product Vendor *</label>
+              <select
+                  onChange={(e) =>
+                    setEditformdata({
+                      ...editformData,
+                      error: false,
+                      success: false,
+                      pVendor: e.target.value,
+                    })
+                  }
+                  name="status"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="status"
+                >
+                  <option disabled value="">
+                    Select a vendor
+                  </option>
+                  {vendors && vendors.length > 0
+                    ? vendors.map(function (elem) {
+                        return (
+                          <Fragment key={elem._id}>
+                            {editformData.pVendor._id &&
+                            editformData.pVendor._id === elem._id ? (
+                              <option
+                                name="status"
+                                value={elem._id}
+                                key={elem._id}
+                                selected
+                              >
+                                {elem.pVendor}
+                              </option>
+                            ) : (
+                              <option
+                                name="status"
+                                value={elem._id}
+                                key={elem._id}
+                              >
+                                {elem.vendorName}
                               </option>
                             )}
                           </Fragment>

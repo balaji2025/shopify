@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { VendorContext } from "./index";
-import { getAllVendor, createVendor} from "./FetchApi";
+import { getAllVendor, createVendor } from "./FetchApi";
 
 
 const AddVendorDetail = ({ vendors }) => {
@@ -93,17 +93,15 @@ const AddVendorDetail = ({ vendors }) => {
       {/* Black Overlay */}
       <div
         onClick={(e) => dispatch({ type: "addVendorModal", payload: false })}
-        className={`${
-          data.addVendorModal ? "" : "hidden"
-        } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
+        className={`${data.addVendorModal ? "" : "hidden"
+          } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
 
       {/* Modal Start */}
       <div
-        className={`${
-          data.addVendorModal ? "" : "hidden"
-        } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
+        className={`${data.addVendorModal ? "" : "hidden"
+          } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-32 md:mt-0 relative bg-white w-11/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8">
           <div className="flex items-center justify-between w-full pt-4">
@@ -185,7 +183,7 @@ const AddVendorDetail = ({ vendors }) => {
                   })
                 }
                 className="px-4 py-2 border focus:outline-none"
-                name="description"jr
+                name="description" jr
                 id="description"
                 cols={5}
                 rows={2}
@@ -219,21 +217,21 @@ const AddVendorDetail = ({ vendors }) => {
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="gstNo">GstNo *</label>
                 <input
-                value={fData.gstNo}
-                onChange={(e) =>
-                  setFdata({
-                    ...fData,
-                    error: false,
-                    success: false,
-                    pDescription: e.target.value,
-                  })
-                }
-                className="px-4 py-2 border focus:outline-none"
-                name="description"jr
-                id="description"
-                cols={5}
-                rows={2}
-              />
+                  value={fData.gstNo}
+                  onChange={(e) =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pDescription: e.target.value,
+                    })
+                  }
+                  className="px-4 py-2 border focus:outline-none"
+                  name="description" jr
+                  id="description"
+                  cols={5}
+                  rows={2}
+                />
               </div>
             </div>
             <div className="flex space-x-1 py-4">
@@ -269,6 +267,25 @@ const AddVendorDetail = ({ vendors }) => {
                   type="number"
                   className="px-4 py-2 border focus:outline-none"
                   id="offer"
+                />
+              </div>
+            </div>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="alternateMobileNo">AlternateMobileNo *</label>
+                <input
+                  value={fData.alternateMobileNo}
+                  onChange={(e) =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pQuantity: e.target.value,
+                    })
+                  }
+                  type="number"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="quantity"
                 />
               </div>
             </div>

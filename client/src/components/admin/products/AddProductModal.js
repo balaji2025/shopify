@@ -273,16 +273,17 @@ const AddProductDetail = ({ categories, vendors }) => {
                 </select>
               </div>
             </div>
-            {/* <div className="w-1/2 flex flex-col space-y-1">
-                <label htmlFor="status">Vendor *</label>
-                <select
-                  value={fData.pVendor}
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+              <label htmlFor="quantity">Product Vendor *</label>
+              <select
+                  value={fData.vendors}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      pVendor: e.target.value,
+                      vendors: e.target.value,
                     })
                   }
                   name="status"
@@ -290,20 +291,20 @@ const AddProductDetail = ({ categories, vendors }) => {
                   id="status"
                 >
                   <option disabled value="">
-                    Select a Vendor
+                    Select a vendor
                   </option>
                   {vendors.length > 0
                     ? vendors.map(function (elem) {
                         return (
                           <option name="status" value={elem._id} key={elem._id}>
-                            {elem.vendorName}
+                            {elem.vendorName  }
                           </option>
                         );
                       })
                     : ""}
                 </select>
               </div>
-            </div> */}
+            </div>
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="quantity">Product in Stock *</label>
@@ -373,14 +374,15 @@ const AddProductModal = (props) => {
 
   const fetchVendorData = async () => {
     let responseData =  await getAllVendor();
-    if  (responseData) {
+    console.log(responseData);  
+    // if  (responseData && responseData.status === "Active") {
       setAllCat(responseData);
-    }
+    // }
   };
 
   return (
     <Fragment>
-      <AddProductDetail categories={allCat} />
+      <AddProductDetail categories={allCat} vendors={allCat}/>
     </Fragment>
   );
 };

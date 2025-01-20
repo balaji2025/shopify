@@ -3,20 +3,21 @@ const vendorModel = require("../models/vendor");
 const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose")
-const { ObjectId } = mongoose.Types;
+// const { ObjectId } = mongoose.Types;
+const { ObjectId } = mongoose.Schema.Types;
+
 
 class Product {
   // Delete Image from uploads -> products folder
   static deleteImages(images, mode) {
-    var basePath =
-      path.resolve(__dirname + "../../") + "/public/uploads/products/";
+    var basePath =  path.resolve(__dirname + "../../") + "/public/uploads/products/";
     console.log(basePath);
     for (var i = 0; i < images.length; i++) {
       let filePath = "";
       if (mode == "file") {
         filePath = basePath + `${images[i].filename}`;
       } else {
-        filePath = basePath + `${images[i]}`;
+        filePath = basePath + `${images[i]}`;y
       }
       console.log(filePath);
       if (fs.existsSync(filePath)) {
@@ -35,8 +36,9 @@ class Product {
       let Products = await productModel
         .find({})
         .populate("pCategory", "_id cName")
-        .populate("vendor", "_id vendorName")
+        .populate("pVendor", "_id vendorName")
         .sort({ _id: -1 });
+        console.log(Products);
       if (Products) {
         return res.json({ Products });
       }
@@ -46,7 +48,7 @@ class Product {
   }
 
   async postAddProduct(req, res) {
-    let { pName, pDescription, pPrice, pQuantity, pCategory, productVendor, pOffer, pStatus } = req.body;
+    let { pName, pDescription, pPrice, pQuantity, pCategory, pVendor, pOffer, pStatus } = req.body;
     let images = req.files;
     // Validation
     try {
@@ -54,8 +56,8 @@ class Product {
       // const vendor = "678a1cda35a10525e4780e47";
       // const id = JSON.stringify(vendor);
       // console.log(id);
-      console.log(String(productVendor));
-      const v = String(productVendor);
+      // console.log(String(productVendor));
+      const v = String(pVendor);
       console.log(typeof(v));
       const activeVendor = await vendorModel.findOne({ _id: ObjectId(v) });
       // console.log(activeVendor);
@@ -70,7 +72,7 @@ class Product {
         !pPrice || 
         !pQuantity || 
         !pCategory || 
-        !productVendor || 
+        !pVendor || 
         !pOffer || 
         !pStatus
       ) {
@@ -103,7 +105,7 @@ class Product {
         pPrice,
         pQuantity,
         pCategory,
-        productVendor,
+        pVendor,
         pOffer,
         pStatus,
       });
@@ -123,7 +125,7 @@ class Product {
       pPrice,
       pQuantity,
       pCategory,
-      productVendor,
+      pVendor,
       pOffer,
       pStatus,
       pImages,
@@ -138,7 +140,7 @@ class Product {
       !pPrice |
       !pQuantity |
       !pCategory |
-      !productVendor |
+      !pVendor |
       !pOffer |
       !pStatus
     ) {
@@ -161,7 +163,7 @@ class Product {
         pPrice,
         pQuantity,
         pCategory,
-        productVendor,
+        pVendor,
         pOffer,
         pStatus,
       };
@@ -213,6 +215,7 @@ class Product {
         let singleProduct = await productModel
           .findById(pId)
           .populate("pCategory", "cName")
+          .populate("pVendor", "vendorName")
           .populate("pRatingsReviews.user", "name email userImage");
         if (singleProduct) {
           return res.json({ Product: singleProduct });

@@ -27,9 +27,9 @@ const productSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "categories",
     },
-    productVendor: {
+    pVendor: {
       type: ObjectId,
-      ref: "vendor"
+      ref: "vendor",
     },
     pImages: {
       type: Array,
