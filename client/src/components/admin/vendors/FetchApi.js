@@ -13,8 +13,7 @@ const Headers = () => {
     };
 };
 
-export const 
-getAllVendor = async () => {
+export const getAllVendor = async () => {
     try {
         let res = await axios.get(`${apiURL}/api/vendor/all`, Headers());
         return res.data;
@@ -31,7 +30,6 @@ export const createVendor = async ({
     gstNo,
     mobileNo,
     alternateMobileNo,
-    createdAt,
     comments
 }) => {
     let formData = new FormData();
@@ -42,14 +40,11 @@ export const createVendor = async ({
     formData.append("gstNo", gstNo);
     formData.append("mobileNo", mobileNo);
     formData.append("alternateMobileNo", alternateMobileNo);
-    formData.append("createdAt", createdAt);
     formData.append("comments", comments);
     try {
-        let result = await axios.post(
-            `${apiURL}/api/vendor/`,
-            formData,
-            Headers()
-        );
+        console.log("started"); 
+        let result = await axios.post(`${apiURL}/api/vendor/`, formData, Headers());
+        console.log(result);
         return result.data;
     } catch (error) {
         console.log(error)

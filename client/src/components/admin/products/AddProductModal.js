@@ -45,7 +45,7 @@ const AddProductDetail = ({ categories, vendors }) => {
       setFdata({ ...fData, error: "Please upload at least 2 image" });
       setTimeout(() => {
         setFdata({ ...fData, error: false });
-      }, 2000);
+      }, 2000); 
     }
 
     try {

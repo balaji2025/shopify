@@ -54,8 +54,6 @@ const AddVendorDetail = ({ vendors }) => {
           gstNo: "",
           mobileNo: "",
           alternateMobileNo: "",
-          createdAt: "",
-          updatedAt: "",
           comments: "",
           success: responseData.success,
           error: false,
@@ -70,8 +68,6 @@ const AddVendorDetail = ({ vendors }) => {
             gstNo: "",
             mobileNo: "",
             alternateMobileNo: "",
-            createdAt: "",
-            updatedAt: "",
             comments: "",
             success: false,
             error: false,
@@ -145,7 +141,7 @@ const AddVendorDetail = ({ vendors }) => {
                       ...fData,
                       error: false,
                       success: false,
-                      pName: e.target.value,
+                      vendorName: e.target.value,
                     })
                   }
                   className="px-4 py-2 border focus:outline-none"
@@ -161,10 +157,10 @@ const AddVendorDetail = ({ vendors }) => {
                       ...fData,
                       error: false,
                       success: false,
-                      pPrice: e.target.value,
+                      email: e.target.value,
                     })
                   }
-                  type="number"
+                  type="email"
                   className="px-4 py-2 border focus:outline-none"
                   id="price"
                 />
@@ -179,7 +175,7 @@ const AddVendorDetail = ({ vendors }) => {
                     ...fData,
                     error: false,
                     success: false,
-                    pDescription: e.target.value,
+                    address: e.target.value,
                   })
                 }
                 className="px-4 py-2 border focus:outline-none"
@@ -199,7 +195,7 @@ const AddVendorDetail = ({ vendors }) => {
                       ...fData,
                       error: false,
                       success: false,
-                      pStatus: e.target.value,
+                      status: e.target.value,
                     })
                   }
                   name="status"
@@ -223,7 +219,7 @@ const AddVendorDetail = ({ vendors }) => {
                       ...fData,
                       error: false,
                       success: false,
-                      pDescription: e.target.value,
+                      gstNo: e.target.value,
                     })
                   }
                   className="px-4 py-2 border focus:outline-none"
@@ -244,7 +240,7 @@ const AddVendorDetail = ({ vendors }) => {
                       ...fData,
                       error: false,
                       success: false,
-                      pQuantity: e.target.value,
+                      mobileNo: e.target.value,
                     })
                   }
                   type="number"
@@ -254,14 +250,14 @@ const AddVendorDetail = ({ vendors }) => {
               </div>
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="comments">Comments *</label>
-                <input
+                <textarea
                   value={fData.comments}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      pOffer: e.target.value,
+                      comments: e.target.value,
                     })
                   }
                   type="number"
@@ -280,7 +276,7 @@ const AddVendorDetail = ({ vendors }) => {
                       ...fData,
                       error: false,
                       success: false,
-                      pQuantity: e.target.value,
+                      alternateMobileNo: e.target.value,
                     })
                   }
                   type="number"
@@ -314,8 +310,8 @@ const AddVendorModal = (props) => {
 
   const fetchVendorData = async () => {
     let responseData = await getAllVendor();
-    if (responseData.Vendors) {
-      setAllCat(responseData.Vendors);
+    if (responseData) {
+      setAllCat(responseData);
     }
   };
 

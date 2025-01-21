@@ -29,9 +29,9 @@ class Vendor {
     }
 
     async postAddVendor(req, res) {
-        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo, createdAt} = req.body;
+        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo, comments} = req.body;
         try {
-            if (!vendorName || !email || !address ||!status ||!gstNo || !mobileNo || !alternateMobileNo ||!createdAt) {
+            if (!vendorName || !email || !address ||!status ||!gstNo || !mobileNo || !alternateMobileNo) {
                 return res.status(400).json({ error: "All fields are required!" });
             }
     
@@ -50,6 +50,7 @@ class Vendor {
                 gstNo,
                 mobileNo,
                 alternateMobileNo,
+                comments,
                 createdAt
             });
     
@@ -65,8 +66,8 @@ class Vendor {
     //i've to change put
     async putEditVendor(req, res) {
         let {id} = req.params;
-        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo} = req.body;
-        if (!vendorName || !email ||!status || !gstNo || !mobileNo ||!alternateMobileNo) {
+        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo,  comments} = req.body;
+        if (!vendorName || !email ||!status || !gstNo || !mobileNo ||!alternateMobileNo ||!comments) {
             return res.status(400).json({ error: "Required Filed Must Not Be Empty!" });
         }
         try {
@@ -78,6 +79,7 @@ class Vendor {
                 gstNo,
                 mobileNo,
                 alternateMobileNo,
+                comments,
                 updatedAt: Date.now()
             });
             let edit = await editVendor.save();
