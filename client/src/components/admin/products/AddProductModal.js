@@ -277,13 +277,13 @@ const AddProductDetail = ({ categories, vendors }) => {
               <div className="w-1/2 flex flex-col space-y-1">
               <label htmlFor="quantity">Product Vendor *</label>
               <select
-                  value={fData.vendors}
+                  value={fData.pVendor}
                   onChange={(e) =>
                     setFdata({
                       ...fData,
                       error: false,
                       success: false,
-                      vendors: e.target.value,
+                      pVendor: e.target.value,
                     })
                   }
                   name="status"

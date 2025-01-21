@@ -3,7 +3,7 @@ import { VendorContext } from "./index";
 import { getAllVendor, createVendor } from "./FetchApi";
 
 
-const AddVendorDetail = ({ vendors }) => {
+const AddVendorDetail = (props) => {
   const { data, dispatch } = useContext(VendorContext);
 
   const alert = (msg, type) => (
@@ -58,6 +58,7 @@ const AddVendorDetail = ({ vendors }) => {
           success: responseData.success,
           error: false,
         });
+        dispatch({ type: "loading", payload: false });
         setTimeout(() => {
           setFdata({
             ...fData,
