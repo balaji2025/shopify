@@ -14,7 +14,7 @@ const AddVendorDetail = (props) => {
     vendorName: "",
     email: "",
     address: "",
-    status: "",
+    status: "Active",
     gstNo: "",
     mobileNo: "",
     alternateMobileNo: "",

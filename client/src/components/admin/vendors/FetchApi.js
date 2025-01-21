@@ -22,28 +22,10 @@ export const getAllVendor = async () => {
     }
 };
 
-export const createVendor = async ({
-    vendorName,
-    email,
-    address,
-    status,
-    gstNo,
-    mobileNo,
-    alternateMobileNo,
-    comments
-}) => {
-    let formData = new FormData();
-    formData.append("vendorName", vendorName);
-    formData.append("email", email);
-    formData.append("address", address);
-    formData.append("status", status);
-    formData.append("gstNo", gstNo);
-    formData.append("mobileNo", mobileNo);
-    formData.append("alternateMobileNo", alternateMobileNo);
-    formData.append("comments", comments);
+export const createVendor = async (data) => {
     try {
         console.log("started"); 
-        let result = await axios.post(`${apiURL}/api/vendor`, formData, Headers());
+        let result = await axios.post(`${apiURL}/api/vendor`, data, Headers());
         console.log(result);
         return result.data;
     } catch (error) {

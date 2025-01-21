@@ -31,7 +31,7 @@ class Vendor {
     async postAddVendor(req, res) {
         let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo, comments} = req.body;
         try {
-            if (!vendorName || !email || !address ||!status ||!gstNo || !mobileNo || !alternateMobileNo) {
+            if (!vendorName || !email || !address || !status ||!gstNo || !mobileNo || !alternateMobileNo) {
                 return res.status(400).json({ error: "All fields are required!" });
             }
     
