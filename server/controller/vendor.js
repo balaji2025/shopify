@@ -94,16 +94,16 @@ class Vendor {
         
         let { id } = req.params;
         try {
-            console.log(id);
-    
             if (!id) {
                 return res.status(400).json({ error: "Vendor ID is required and You can only change the status of the vendor!" });
             }
             
             let deletedVendor = await vendorModel.findById(id);
-            if (deletedVendor.status == "Active") {
+            if (deletedVendor.status === "Active") {
                 deletedVendor.status = "Inactive";
                 deletedVendor.updatedAt = Date.now();
+                await deletedVendor.save();
+                return res.json(deletedVendor);
             }
     
             if (deletedVendor) {
