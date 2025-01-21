@@ -84,7 +84,7 @@ export const editProduct = async (product) => {
 
 export const deleteProduct = async (pId) => {
   try {
-    let res = await axios.post(`${apiURL}/api/product/delete-product`, { pId });
+    let res = await axios.post(`${apiURL}/api/product/delete`, { pId });
     return res.data;
   } catch (error) {
     console.log(error);

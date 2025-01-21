@@ -43,7 +43,7 @@ export const createVendor = async ({
     formData.append("comments", comments);
     try {
         console.log("started"); 
-        let result = await axios.post(`${apiURL}/api/vendor/`, formData, Headers());
+        let result = await axios.post(`${apiURL}/api/vendor`, formData, Headers());
         console.log(result);
         return result.data;
     } catch (error) {
@@ -73,7 +73,7 @@ export const editVendor = async ({
 
 export const deleteVendorById = async (id) => {
     try {
-        let result = await axios.delete(`${apiURL}/api/vendor/byId/:id`, Headers());
+        let result = await axios.delete(`${apiURL}/api/vendor/by-id/:id`, Headers());
         return result.data;
     } catch (error) {
         console.log(error);
@@ -82,7 +82,7 @@ export const deleteVendorById = async (id) => {
 
 export const getVendorById = async (id) => {
     try {
-        let result  = await axios.get(`${apiURL}/api/vendor/byId/:id`, Headers());
+        let result  = await axios.get(`${apiURL}/api/vendor/by-id/:id`, Headers());
         return result.data;
     } catch (error) {
         console.log(error);

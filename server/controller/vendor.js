@@ -50,8 +50,7 @@ class Vendor {
                 gstNo,
                 mobileNo,
                 alternateMobileNo,
-                comments,
-                createdAt
+                comments
             });
     
             await newVendor.save();
