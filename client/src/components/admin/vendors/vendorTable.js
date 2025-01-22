@@ -34,9 +34,10 @@ const AllVendor = (props) => {
     let deleteVendor = await deleteVendorById(id);
     if (deleteVendor.error) {
       console.log(deleteVendor.error);
-    } else if (deleteVendor.success) {
-      console.log(deleteVendor.success);
-      fetchData();
+    } else if (deleteVendor.message) {
+      console.log(deleteVendor.message);
+      let n =  fetchData();
+      console.log(n)
     }
   };
 

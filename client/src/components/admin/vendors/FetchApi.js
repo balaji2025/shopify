@@ -44,7 +44,7 @@ export const editVendor = async ({
     alternateMobileNo,
     comments
 }) => {
-    let data = { id: id, vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo, comments:comments };
+    let data = { id: id, vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo, comments: comments };
     try {
         let result = await axios.put(`${apiURL}/api/vendor/${id}`, data, Headers());
         return result.data;
