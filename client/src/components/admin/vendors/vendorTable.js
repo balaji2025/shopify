@@ -36,8 +36,7 @@ const AllVendor = (props) => {
       console.log(deleteVendor.error);
     } else if (deleteVendor.message) {
       console.log(deleteVendor.message);
-      let n =  fetchData();
-      console.log(n)
+      fetchData();
     }
   };
 
