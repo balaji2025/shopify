@@ -115,17 +115,15 @@ const EditProductModal = (props) => {
         onClick={(e) =>
           dispatch({ type: "editProductModalClose", payload: false })
         }
-        className={`${
-          data.editProductModal.modal ? "" : "hidden"
-        } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
+        className={`${data.editProductModal.modal ? "" : "hidden"
+          } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
 
       {/* Modal Start */}
       <div
-        className={`${
-          data.editProductModal.modal ? "" : "hidden"
-        } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
+        className={`${data.editProductModal.modal ? "" : "hidden"
+          } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-32 md:mt-0 relative bg-white w-11/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8">
           <div className="flex items-center justify-between w-full pt-4">
@@ -295,38 +293,38 @@ const EditProductModal = (props) => {
                   </option>
                   {categories && categories.length > 0
                     ? categories.map((elem) => {
-                        return (
-                          <Fragment key={elem._id}>
-                            {editformData.pCategory._id &&
+                      return (
+                        <Fragment key={elem._id}>
+                          {editformData.pCategory._id &&
                             editformData.pCategory._id === elem._id ? (
-                              <option
-                                name="status"
-                                value={elem._id}
-                                key={elem._id}
-                                selected
-                              >
-                                {elem.cName}
-                              </option>
-                            ) : (
-                              <option
-                                name="status"
-                                value={elem._id}
-                                key={elem._id}
-                              >
-                                {elem.cName}
-                              </option>
-                            )}
-                          </Fragment>
-                        );
-                      })
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                              selected
+                            >
+                              {elem.cName}
+                            </option>
+                          ) : (
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                            >
+                              {elem.cName}
+                            </option>
+                          )}
+                        </Fragment>
+                      );
+                    })
                     : ""}
                 </select>
               </div>
             </div>
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
-              <label htmlFor="quantity">Product Vendor *</label>
-              <select
+                <label htmlFor="quantity">Product Vendor *</label>
+                <select
                   onChange={(e) =>
                     setEditformdata({
                       ...editformData,
@@ -344,30 +342,30 @@ const EditProductModal = (props) => {
                   </option>
                   {vendors && vendors.length > 0
                     ? vendors.map(function (elem) {
-                        return (
-                          <Fragment key={elem._id}>
-                            {editformData.pVendor._id &&
+                      return (
+                        <Fragment key={elem._id}>
+                          {editformData.pVendor._id &&
                             editformData.pVendor._id === elem._id ? (
-                              <option
-                                name="status"
-                                value={elem._id}
-                                key={elem._id}
-                                selected
-                              >
-                                {elem.pVendor}
-                              </option>
-                            ) : (
-                              <option
-                                name="status"
-                                value={elem._id}
-                                key={elem._id}
-                              >
-                                {elem.vendorName}
-                              </option>
-                            )}
-                          </Fragment>
-                        );
-                      })
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                              selected
+                            >
+                              {elem.pVendor}
+                            </option>
+                          ) : (
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                            >
+                              {elem.vendorName}
+                            </option>
+                          )}
+                        </Fragment>
+                      );
+                    })
                     : ""}
                 </select>
               </div>
