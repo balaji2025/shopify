@@ -24,7 +24,6 @@ export const getAllVendor = async () => {
 
 export const createVendor = async (data) => {
     try {
-        console.log("started"); 
         let result = await axios.post(`${apiURL}/api/vendor`, data, Headers());
         console.log(result);
         return result.data;
@@ -53,9 +52,15 @@ export const editVendor = async ({
     }
 }
 
-export const deleteVendorById = async (id) => {
+export const deleteVendorById = async ({
+    id,
+    comments,
+    status
+}) => {
+    let data =  {comments: comments,status: status}
+    console.log(data);
     try {
-        let result = await axios.delete(`${apiURL}/api/vendor/by-id/${id}`, Headers());
+        let result = await axios.put(`${apiURL}/api/vendor/status/${id}`, data, Headers());
         return result.data;
     } catch (error) {
         console.log(error);

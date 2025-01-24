@@ -54,7 +54,6 @@ export const createProduct = async ({
 };
 
 export const editProduct = async (product) => {
-  console.log(product);
   /* Most important part for updating multiple image  */
   let formData = new FormData();
   if (product.pEditImages) {

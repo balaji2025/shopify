@@ -15,6 +15,20 @@ export const vendorState = {
       updatedAt: "",
       comments: "",
     },
+    deleteVendorModal: {
+      modal: false,
+      id: "",
+      vendorName: "",
+      email: "",
+      address: "",
+      status: "",
+      gstNo: "",
+      mobileNo: "",
+      alternateMobileNo: "",
+      createdAt: "",
+      updatedAt: "",
+      comments: "",
+    }
   };
   
   export const vendorReducer = (state, action) => {
@@ -35,7 +49,7 @@ export const vendorState = {
       case "editVendorModalOpen":
         return {
           ...state,
-          addVendorModal: {
+          editVendorModal: {
             modal: true,
             id: action.vendor.id,
             vendorName: action.vendor.vendorName,
@@ -51,7 +65,7 @@ export const vendorState = {
       case "editVendorModalClose":
         return {
           ...state,
-          editProductModal: {
+          editVendorModal: {
             modal: false,
             id: "",
             vendorName: "",
@@ -64,7 +78,41 @@ export const vendorState = {
             comments: "",
           },
         };
+
+      //delete vendor
+      case "deleteVendorModalOpen":
+      return{
+        ...state,
+        deleteVendorModal: {
+          modal: true,
+          id: action.vendor.id,
+          vendorName: action.vendor.vendorName,
+          email: action.vendor.email,
+          address: action.vendor.address,
+          status: action.vendor.status,
+          gstNo: action.vendor.gstNo,
+          mobileNo: action.vendor.mobileNo,
+          alternateMobileNo: action.vendor.alternateMobileNo,
+          comments: action.vendor.comments,
+        },
+      };
+      case "deleteVendorModalClose":
+      return {
+        ...state,
+        deleteVendorModal: {
+          modal: true,
+          id: action.vendor.id,
+          vendorName: action.vendor.vendorName,
+          email: action.vendor.email,
+          address: action.vendor.address,
+          status: action.vendor.status,
+          gstNo: action.vendor.gstNo,
+          mobileNo: action.vendor.mobileNo,
+          alternateMobileNo: action.vendor.alternateMobileNo,
+          comments: action.vendor.comments,
+        },
+      }
       default:
-        return state;
+      return state;
     }
   };

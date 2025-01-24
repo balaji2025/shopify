@@ -2,6 +2,7 @@ import React, { Fragment, useContext } from "react";
 import { VendorContext } from "./index";
 import AddVendorModal from "./AddVendorModal";
 import EditVendorModal from "./EditVendorModal";
+import DeleteVendorModal  from  "./DeleteVendorModal";
 
 const VendorMenu = (props) => {
   const { dispatch } = useContext(VendorContext);
@@ -34,6 +35,7 @@ const VendorMenu = (props) => {
         </div>
         <AddVendorModal />
         <EditVendorModal />
+        <DeleteVendorModal />
       </div>
     </Fragment>
   );

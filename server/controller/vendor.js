@@ -65,7 +65,7 @@ class Vendor {
     //i've to change put
     async putEditVendor(req, res) {
         let {id} = req.params;
-        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo,  comments} = req.body;
+        let {vendorName, email, address, status, gstNo, mobileNo, alternateMobileNo, comments} = req.body;
         if (!vendorName || !email ||!status || !gstNo || !mobileNo ||!alternateMobileNo ||!comments) {
             return res.status(400).json({ error: "Required Filed Must Not Be Empty!" });
         }
@@ -93,21 +93,27 @@ class Vendor {
     async deleteVendor(req, res) {
         
         let { id } = req.params;
+        let {comments} = req.body;
+        let {status} = req.body;
+        let deletedVendor = await vendorModel.findByIdAndUpdate(id);
         try {
             if (!id) {
                 return res.status(400).json({ error: "Vendor ID is required and You can only change the status of the vendor!" });
             }
-            
-            let deletedVendor = await vendorModel.findById(id);
-            if (deletedVendor.status === "Active") {
-                deletedVendor.status = "Inactive";
-                deletedVendor.updatedAt = Date.now();
-                await deletedVendor.save();
+            if  (!comments)  {
+                return res.status(400).json({error:  "Comments is mandatory when changing the statusxt"})
+            }
+            if (status) {
+                // deletedVendor.status = "Inactive";
+                // deletedVendor.comments = comments;
+                // deletedVendor.updatedAt = Date.now();
+                // await deletedVendor.save();
+                // return res.json(deletedVendor);  
+                deletedVendor.status = status;
                 return res.json(deletedVendor);
             }
-    
             if (deletedVendor) {
-                return res.status(200).json({ message: "Changed the vendor status to Inactive!"});
+                return res.status(200).json({ success: "Changed the status of Vendor as per your request!"});
             } else {
                 return res.status(404).json({ error: "Vendor not found!" });
             }

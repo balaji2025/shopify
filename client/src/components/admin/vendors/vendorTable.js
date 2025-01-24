@@ -1,9 +1,8 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { getAllVendor, deleteVendorById } from "./FetchApi";
+import { getAllVendor } from "./FetchApi";
 // import moment from "moment";
 import { VendorContext } from "./index";
 
-// const apiURL = process.env.REACT_APP_API_URL;
 
 const AllVendor = (props) => {
   const { data, dispatch } = useContext(VendorContext);
@@ -30,16 +29,12 @@ const AllVendor = (props) => {
     }, 1000);
   };
 
-  const deleteVendorReq = async (id) => {
-    let deleteVendor = await deleteVendorById(id);
-    if (deleteVendor.error) {
-      console.log(deleteVendor.error);
-    } else if (deleteVendor.message) {
-      console.log(deleteVendor.message);
-      fetchData();
-    } else if (deleteVendor.success) {
-      console.log(deleteVendor.success);
-      fetchData();
+  const deleteVendorReq = (id, vendor, type) => {
+    if (type) {
+      dispatch({
+        type:  "deleteVendorModalOpen",
+        vendor: {...vendor, id: id},
+      });
     }
   };
 
@@ -92,14 +87,14 @@ const AllVendor = (props) => {
           <tbody>
             {vendors && vendors.length > 0 ? (
               vendors.map((item, key) => {
-                console.log(vendors);
                 return (
                   <VendorTable
                     vendor={item}
                     editVendor={(id, vendor, type) =>
                       editVendor(id, vendor, type)
                     }
-                    deleteVendor={(id) => deleteVendorReq(id)}
+                    deleteVendor={(id,  vendor, type) => 
+                      deleteVendorReq(id, vendor, type)}
                     key={key}
                   />
                 );
@@ -184,7 +179,7 @@ const VendorTable = ({ vendor, deleteVendor, editVendor }) => {
             </svg>
           </span>
           <span
-            onClick={(e) => deleteVendor(vendor._id)}
+            onClick={(e) => deleteVendor(vendor._id,  vendor,  true)}
             className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
           >
             <svg

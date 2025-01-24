@@ -6,7 +6,6 @@ import  {editVendor, getAllVendor } from "./FetchApi";
 const EditVendorModal = (props) => {
   const { data, dispatch } = useContext(VendorContext);
 
-  const [ setVendors] = useState(null);
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
@@ -29,7 +28,10 @@ const EditVendorModal = (props) => {
   const fetchVendorData = async () => {
     let responseData = await getAllVendor();
     if (responseData) {
-      setVendors(responseData);
+      dispatch({
+        type: "fetchVendorsAndChangeState",
+        payload: responseData
+      });
     }
   };
 
@@ -103,7 +105,7 @@ const EditVendorModal = (props) => {
         <div className="mt-32 md:mt-0 relative bg-white w-11/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8">
           <div className="flex items-center justify-between w-full pt-4">
             <span className="text-left font-semibold text-2xl tracking-wider">
-              Edit Vendor
+              Edit vendor
             </span>
             {/* Close Modal */}
             <span
@@ -180,7 +182,7 @@ const EditVendorModal = (props) => {
                   })
                 }
                 className="px-4 py-2 border focus:outline-none"
-                name="description" jr
+                name="description"
                 id="description"
                 cols={5}
                 rows={2}
@@ -224,7 +226,7 @@ const EditVendorModal = (props) => {
                     })
                   }
                   className="px-4 py-2 border focus:outline-none"
-                  name="description" jr
+                  name="description"
                   id="description"
                   cols={5}
                   rows={2}
@@ -261,7 +263,7 @@ const EditVendorModal = (props) => {
                       comments: e.target.value,
                     })
                   }
-                  type="number"
+                  type="string"
                   className="px-4 py-2 border focus:outline-none"
                   id="offer"
                 />
@@ -292,7 +294,7 @@ const EditVendorModal = (props) => {
                 type="submit"
                 className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-2"
               >
-                Edit vendor
+                Save vendor
               </button>
             </div>
           </form>

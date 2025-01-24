@@ -412,7 +412,7 @@ const EditProductModal = (props) => {
                 type="submit"
                 className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-2"
               >
-                Update product
+                Save product
               </button>
             </div>
           </form>
