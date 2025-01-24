@@ -83,7 +83,7 @@ class Vendor {
             });
             let edit = await editVendor.save();
             if (edit) {
-                return res.json(edit);
+                return res.json({ success: "Vendor edit successfully" });
             }
         } catch (error) {
             console.error(error);

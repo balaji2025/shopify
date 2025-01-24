@@ -26,31 +26,34 @@ const EditVendorModal = (props) => {
     success: false,
   });
 
+  const fetchVendorData = async () => {
+    let responseData = await getAllVendor();
+    if (responseData) {
+      setVendors(responseData);
+    }
+  };
+
   useEffect(() => {
     fetchVendorData();
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-      setEditformdata({
-          id: data.editVendorModal.id,
-          vendorName: data.editVendorModal.vendorName,
-          email: data.editVendorModal.email,
-          address: data.editVendorModal.address,
-          status: data.editVendorModal.status,
-          gstNo: data.editVendorModal.gstNo,
-          mobileNo: data.editVendorModal.mobileNo,
-          alternateMobileNo: data.editVendorModal.alternateMobileNo,
-          comments: data.editVendorModal.comments,
-        });
-    }, [data.editVendorModal]);
+    setEditformdata({
+      id: data.editVendorModal.id,
+      vendorName: data.editVendorModal.vendorName,
+      email: data.editVendorModal.email,
+      address: data.editVendorModal.address,
+      status: data.editVendorModal.status,
+      gstNo: data.editVendorModal.gstNo,
+      mobileNo: data.editVendorModal.mobileNo,
+      alternateMobileNo: data.editVendorModal.alternateMobileNo,
+      comments: data.editVendorModal.comments,
+    });
+  }, [data.editVendorModal]);
     
-    const fetchVendorData = async () => {
-      let responseData = await getAllVendor();
-      if (responseData) {
-        setVendors(responseData);
-      }
-    };
-
+  
   const submitForm = async (e) => {
     e.preventDefault();
     try {
@@ -289,7 +292,7 @@ const EditVendorModal = (props) => {
                 type="submit"
                 className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-2"
               >
-                Create vendor
+                Edit vendor
               </button>
             </div>
           </form>

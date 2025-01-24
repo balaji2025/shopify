@@ -9,7 +9,7 @@ const AllVendor = (props) => {
   const { data, dispatch } = useContext(VendorContext);
   const { vendors } = data;
 
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -17,7 +17,7 @@ const AllVendor = (props) => {
   }, []);
 
   const fetchData = async () => {
-    dispatch({ type: "loading", payload: true });
+    setLoading(true);
     let responseData = await getAllVendor();
     setTimeout(() => {
       if (responseData) {
@@ -25,7 +25,7 @@ const AllVendor = (props) => {
           type: "fetchVendorsAndChangeState",
           payload: responseData,
         });
-        dispatch({ type: "loading", payload: true });
+        setLoading(false);
       }
     }, 1000);
   };
@@ -36,6 +36,9 @@ const AllVendor = (props) => {
       console.log(deleteVendor.error);
     } else if (deleteVendor.message) {
       console.log(deleteVendor.message);
+      fetchData();
+    } else if (deleteVendor.success) {
+      console.log(deleteVendor.success);
       fetchData();
     }
   };
