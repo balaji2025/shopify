@@ -38,7 +38,6 @@ class Product {
         .populate("pCategory", "_id cName")
         .populate("pVendor", "_id vendorName")
         .sort({ _id: -1 });
-        console.log(Products);
       if (Products) {
         return res.json({ Products });
       }
@@ -57,10 +56,11 @@ class Product {
       // const id = JSON.stringify(vendor);
       // console.log(id);
       // console.log(String(productVendor));
-      const v = String(pVendor);
-      console.log(typeof(v));
-      const activeVendor = await vendorModel.findOne({ _id: ObjectId(v) });
-      // console.log(activeVendor);
+      // const v = String(pVendor);
+      // console.log(typeof(v));
+      // console.log(ObjectId(v))
+      const activeVendor = await vendorModel.findById(pVendor);
+      console.log(activeVendor);
       if (!activeVendor) {
         return res.status(400).json({ error: "Vendor is not active or invalid" });
       }

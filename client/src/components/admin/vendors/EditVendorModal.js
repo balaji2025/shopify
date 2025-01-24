@@ -1,11 +1,9 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { VendorContext } from "./index";
-import  {editVendor, getAllVendor } from "./FetchApi";
-
+import { editVendor, getAllVendor } from "./FetchApi";
 
 const EditVendorModal = (props) => {
   const { data, dispatch } = useContext(VendorContext);
-
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
@@ -30,14 +28,14 @@ const EditVendorModal = (props) => {
     if (responseData) {
       dispatch({
         type: "fetchVendorsAndChangeState",
-        payload: responseData
+        payload: responseData,
       });
     }
   };
 
   useEffect(() => {
     fetchVendorData();
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,8 +52,7 @@ const EditVendorModal = (props) => {
       comments: data.editVendorModal.comments,
     });
   }, [data.editVendorModal]);
-    
-  
+
   const submitForm = async (e) => {
     e.preventDefault();
     try {
@@ -174,7 +171,7 @@ const EditVendorModal = (props) => {
               <textarea
                 value={editformData.address}
                 onChange={(e) =>
-                    setEditformdata({
+                  setEditformdata({
                     ...editformData,
                     error: false,
                     success: false,

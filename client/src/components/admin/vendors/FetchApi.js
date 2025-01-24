@@ -57,8 +57,7 @@ export const deleteVendorById = async ({
     comments,
     status
 }) => {
-    let data =  {comments: comments,status: status}
-    console.log(data);
+    let data =  {comments: comments,  status: status}
     try {
         let result = await axios.put(`${apiURL}/api/vendor/status/${id}`, data, Headers());
         return result.data;

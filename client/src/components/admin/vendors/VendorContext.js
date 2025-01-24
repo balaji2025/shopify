@@ -100,16 +100,16 @@ export const vendorState = {
       return {
         ...state,
         deleteVendorModal: {
-          modal: true,
-          id: action.vendor.id,
-          vendorName: action.vendor.vendorName,
-          email: action.vendor.email,
-          address: action.vendor.address,
-          status: action.vendor.status,
-          gstNo: action.vendor.gstNo,
-          mobileNo: action.vendor.mobileNo,
-          alternateMobileNo: action.vendor.alternateMobileNo,
-          comments: action.vendor.comments,
+          modal: false,
+          id: "",
+          vendorName: "",
+          email: "",
+          address: "",
+          status: "",
+          gstNo: "",
+          mobileNo: "",
+          alternateMobileNo: "",
+          comments: "",
         },
       }
       default:

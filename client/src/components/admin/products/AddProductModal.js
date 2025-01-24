@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ProductContext } from "./index";
 import { createProduct, getAllProduct } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
-import {  getAllVendor } from "../vendors/FetchApi";
+import { getAllVendor } from "../vendors/FetchApi";
 
 const AddProductDetail = ({ categories, vendors }) => {
   const { data, dispatch } = useContext(ProductContext);
@@ -45,7 +45,7 @@ const AddProductDetail = ({ categories, vendors }) => {
       setFdata({ ...fData, error: "Please upload at least 2 image" });
       setTimeout(() => {
         setFdata({ ...fData, error: false });
-      }, 2000); 
+      }, 2000);
     }
 
     try {
@@ -190,7 +190,8 @@ const AddProductDetail = ({ categories, vendors }) => {
                   })
                 }
                 className="px-4 py-2 border focus:outline-none"
-                name="description"jr
+                name="description"
+                jr
                 id="description"
                 cols={5}
                 rows={2}
@@ -275,8 +276,8 @@ const AddProductDetail = ({ categories, vendors }) => {
             </div>
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
-              <label htmlFor="quantity">Product Vendor *</label>
-              <select
+                <label htmlFor="quantity">Product Vendor *</label>
+                <select
                   value={fData.pVendor}
                   onChange={(e) =>
                     setFdata({
@@ -297,7 +298,7 @@ const AddProductDetail = ({ categories, vendors }) => {
                     ? vendors.map(function (elem) {
                         return (
                           <option name="status" value={elem._id} key={elem._id}>
-                            {elem.vendorName  }
+                            {elem.vendorName}
                           </option>
                         );
                       })
@@ -364,6 +365,7 @@ const AddProductModal = (props) => {
   }, []);
 
   const [allCat, setAllCat] = useState({});
+  const [allVendor, setAllVendor] = useState({});
 
   const fetchCategoryData = async () => {
     let responseData = await getAllCategory();
@@ -373,16 +375,16 @@ const AddProductModal = (props) => {
   };
 
   const fetchVendorData = async () => {
-    let responseData =  await getAllVendor();
-    console.log(responseData);  
+    let responseData = await getAllVendor();
+    console.log(responseData);
     // if  (responseData && responseData.status === "Active") {
-      setAllCat(responseData);
+      setAllVendor(responseData);
     // }
   };
 
   return (
     <Fragment>
-      <AddProductDetail categories={allCat} vendors={allCat}/>
+      <AddProductDetail categories={allCat} vendors={allVendor} />
     </Fragment>
   );
 };
