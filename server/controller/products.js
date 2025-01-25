@@ -1,8 +1,10 @@
 const productModel = require("../models/products");
+const categoriesModel = require("../models/categories");
 const vendorModel = require("../models/vendor");
 const fs = require("fs");
 const path = require("path");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { getEnabledCategories } = require("trace_events");
 // const { ObjectId } = mongoose.Types;
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -17,7 +19,7 @@ class Product {
       if (mode == "file") {
         filePath = basePath + `${images[i].filename}`;
       } else {
-        filePath = basePath + `${images[i]}`;y
+        filePath = basePath + `${images[i]}`;
       }
       console.log(filePath);
       if (fs.existsSync(filePath)) {
@@ -111,7 +113,7 @@ class Product {
       });
   
       const savedProduct = await newProduct.save();
-      return res.status(201).json( savedProduct );
+      return res.status(201).json( {success: "Product  Created Sucessfully..!"} );
     } catch (err) {
         console.log(err);
       }
@@ -167,6 +169,9 @@ class Product {
         pOffer,
         pStatus,
       };
+      // console.log(editData.pCategory, editData.pVendor);
+      let n = await categoriesModel.findById(pCategory);
+      console.log(n);
       if (editImages.length == 2) {
         let allEditImages = [];
         for (const img of editImages) {

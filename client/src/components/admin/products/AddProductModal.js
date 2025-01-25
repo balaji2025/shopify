@@ -191,7 +191,6 @@ const AddProductDetail = ({ categories, vendors }) => {
                 }
                 className="px-4 py-2 border focus:outline-none"
                 name="description"
-                jr
                 id="description"
                 cols={5}
                 rows={2}

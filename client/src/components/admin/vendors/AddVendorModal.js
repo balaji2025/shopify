@@ -28,10 +28,10 @@ const AddVendorDetail = (props) => {
   const fetchData = async () => {
     let responseData = await getAllVendor();
     setTimeout(() => {
-      if (responseData && responseData.Vendors) {
+      if (responseData && responseData) {
         dispatch({
-          type: "fetchVendorAndChangeState",
-          payload: responseData.Products,
+          type: "fetchVendorsAndChangeState",
+          payload: responseData,
         });
       }
     }, 1000);
