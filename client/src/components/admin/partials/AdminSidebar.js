@@ -122,9 +122,9 @@ const AdminSidebar = (props) => {
         <hr className="border-b border-gray-200" />
 
         <div
-          onClick={(e) => history.push("/admin/dashboard/vendor")}
+          onClick={(e) => history.push("/admin/dashboard/vendors")}
           className={`${
-            location.pathname === "/admin/dashboard/vendor"
+            location.pathname === "/admin/dashboard/vendors"
               ? "border-r-4 border-gray-800 bg-gray-100"
               : ""
           } hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center py-6`}
@@ -141,11 +141,11 @@ const AdminSidebar = (props) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
               />
             </svg>
           </span>
-          <span className="hover:text-gray-800">vendor</span>
+          <span className="hover:text-gray-800">Vendor</span>
         </div>
         <hr className="border-b border-gray-200" />
       </div>

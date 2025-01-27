@@ -2,12 +2,15 @@ import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ProductContext } from "./index";
 import { editProduct, getAllProduct } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
+import { getAllVendor } from "../vendors/FetchApi";
+
 const apiURL = process.env.REACT_APP_API_URL;
 
 const EditProductModal = (props) => {
   const { data, dispatch } = useContext(ProductContext);
 
   const [categories, setCategories] = useState(null);
+  const [vendors, setVendors] = useState(null);
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
@@ -21,6 +24,7 @@ const EditProductModal = (props) => {
     pEditImages: null,
     pStatus: "",
     pCategory: "",
+    pVendor: "",
     pQuantity: "",
     pPrice: "",
     pOffer: "",
@@ -30,6 +34,7 @@ const EditProductModal = (props) => {
 
   useEffect(() => {
     fetchCategoryData();
+    fetchVendorData();
   }, []);
 
   const fetchCategoryData = async () => {
@@ -39,6 +44,13 @@ const EditProductModal = (props) => {
     }
   };
 
+  const fetchVendorData = async () => {
+    let responseData = await getAllVendor();
+    if (responseData) {
+      setVendors(responseData);
+    }
+  }
+
   useEffect(() => {
     setEditformdata({
       pId: data.editProductModal.pId,
@@ -47,6 +59,7 @@ const EditProductModal = (props) => {
       pImages: data.editProductModal.pImages,
       pStatus: data.editProductModal.pStatus,
       pCategory: data.editProductModal.pCategory,
+      pVendor: data.editProductModal.pVendor,
       pQuantity: data.editProductModal.pQuantity,
       pPrice: data.editProductModal.pPrice,
       pOffer: data.editProductModal.pOffer,
@@ -102,17 +115,15 @@ const EditProductModal = (props) => {
         onClick={(e) =>
           dispatch({ type: "editProductModalClose", payload: false })
         }
-        className={`${
-          data.editProductModal.modal ? "" : "hidden"
-        } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
+        className={`${data.editProductModal.modal ? "" : "hidden"
+          } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
 
       {/* Modal Start */}
       <div
-        className={`${
-          data.editProductModal.modal ? "" : "hidden"
-        } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
+        className={`${data.editProductModal.modal ? "" : "hidden"
+          } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-32 md:mt-0 relative bg-white w-11/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8">
           <div className="flex items-center justify-between w-full pt-4">
@@ -282,30 +293,79 @@ const EditProductModal = (props) => {
                   </option>
                   {categories && categories.length > 0
                     ? categories.map((elem) => {
-                        return (
-                          <Fragment key={elem._id}>
-                            {editformData.pCategory._id &&
+                      return (
+                        <Fragment key={elem._id}>
+                          {editformData.pCategory._id &&
                             editformData.pCategory._id === elem._id ? (
-                              <option
-                                name="status"
-                                value={elem._id}
-                                key={elem._id}
-                                selected
-                              >
-                                {elem.cName}
-                              </option>
-                            ) : (
-                              <option
-                                name="status"
-                                value={elem._id}
-                                key={elem._id}
-                              >
-                                {elem.cName}
-                              </option>
-                            )}
-                          </Fragment>
-                        );
-                      })
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                              selected
+                            >
+                              {elem.cName}
+                            </option>
+                          ) : (
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                            >
+                              {elem.cName}
+                            </option>
+                          )}
+                        </Fragment>
+                      );
+                    })
+                    : ""}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="quantity">Product Vendor *</label>
+                <select
+                  onChange={(e) =>
+                    setEditformdata({
+                      ...editformData,
+                      error: false,
+                      success: false,
+                      pVendor: e.target.value,
+                    })
+                  }
+                  name="status"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="status"
+                >
+                  <option disabled value="">
+                    Select a vendor
+                  </option>
+                  {vendors && vendors.length > 0
+                    ? vendors.map(function (elem) {
+                      return (
+                        <Fragment key={elem._id}>
+                          {editformData.pVendor._id &&
+                            editformData.pVendor._id === elem._id ? (
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                              selected
+                            >
+                              {elem.pVendor}
+                            </option>
+                          ) : (
+                            <option
+                              name="status"
+                              value={elem._id}
+                              key={elem._id}
+                            >
+                              {elem.vendorName}
+                            </option>
+                          )}
+                        </Fragment>
+                      );
+                    })
                     : ""}
                 </select>
               </div>
@@ -352,7 +412,7 @@ const EditProductModal = (props) => {
                 type="submit"
                 className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-2"
               >
-                Update product
+                Save product
               </button>
             </div>
           </form>

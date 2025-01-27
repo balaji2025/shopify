@@ -1,9 +1,8 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { getAllVendor, deleteVendorById } from "./FetchApi";
-import moment from "moment";
+import { getAllVendor } from "./FetchApi";
+// import moment from "moment";
 import { VendorContext } from "./index";
 
-const apiURL = process.env.REACT_APP_API_URL;
 
 const AllVendor = (props) => {
   const { data, dispatch } = useContext(VendorContext);
@@ -20,23 +19,22 @@ const AllVendor = (props) => {
     setLoading(true);
     let responseData = await getAllVendor();
     setTimeout(() => {
-      if (responseData && responseData.Vendors) {
+      if (responseData) {
         dispatch({
           type: "fetchVendorsAndChangeState",
-          payload: responseData.Vendors,
+          payload: responseData,
         });
         setLoading(false);
       }
     }, 1000);
   };
 
-  const deleteVendorReq = async (id) => {
-    let deleteVendor = await deleteVendorById(id);
-    if (deleteVendor.error) {
-      console.log(deleteVendor.error);
-    } else if (deleteVendor.success) {
-      console.log(deleteVendor.success);
-      fetchData();
+  const deleteVendorReq = (id, vendor, type) => {
+    if (type) {
+      dispatch({
+        type:  "deleteVendorModalOpen",
+        vendor: {...vendor, id: id},
+      });
     }
   };
 
@@ -79,14 +77,10 @@ const AllVendor = (props) => {
             <tr>
               <th className="px-4 py-2 border">VendorName</th>
               <th className="px-4 py-2 border">Email</th>
-              <th className="px-4 py-2 border">Address</th>
-              <th className="px-4 py-2 border">Status</th>
               <th className="px-4 py-2 border">GstNo</th>
               <th className="px-4 py-2 border">MobileNo</th>
-              <th className="px-4 py-2 border">AlternateMobileNo</th>
-              <th className="px-4 py-2 border">Created at</th>
-              <th className="px-4 py-2 border">Updated at</th>
               <th className="px-4 py-2 border">Comments</th>
+              <th className="px-4 py-2 border">Status</th>
               <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
@@ -97,9 +91,10 @@ const AllVendor = (props) => {
                   <VendorTable
                     vendor={item}
                     editVendor={(id, vendor, type) =>
-                        editVendor(id, vendor, type)
+                      editVendor(id, vendor, type)
                     }
-                    deleteVendor={(id) => deleteVendorReq(id)}
+                    deleteVendor={(id,  vendor, type) => 
+                      deleteVendorReq(id, vendor, type)}
                     key={key}
                   />
                 );
@@ -137,6 +132,16 @@ const VendorTable = ({ vendor, deleteVendor, editVendor }) => {
         <td className="p-2 text-left">
           {vendor.email.slice(0, 15)}...
         </td>
+        {/* <td className="p-2 text-left">
+          {vendor.address.slice(0, 15)}...
+        </td> */}
+        <td className="p-2 text-center">{vendor.gstNo}</td>
+        <td className="p-2 text-center">{vendor.mobileNo}</td>
+
+        {/* <td className="p-2 text-center">{vendor.alternateMobileNo}</td>
+        <td className="p-2 text-center">{vendor.createdAt}</td>
+        <td className="p-2 text-center">{vendor.updatedAt}</td> */}
+        <td className="p-2 text-center">{vendor.comments}</td>
         <td className="p-2 text-center">
           {vendor.status === "Active" ? (
             <span className="bg-green-200 rounded-full text-center text-xs px-2 font-semibold">
@@ -148,18 +153,12 @@ const VendorTable = ({ vendor, deleteVendor, editVendor }) => {
             </span>
           )}
         </td>
-        <td className="p-2 text-center">{vendor.GstNo}</td>
-        <td className="p-2 text-center">{vendor.mobileNo}</td>
-        <td className="p-2 text-center">{vendor.alternateMobileNo}</td>
-        <td className="p-2 text-center">{vendor.createdAt}</td>
-        <td className="p-2 text-center">{vendor.updatedAt}</td>
-        <td className="p-2 text-center">{vendor.comments}</td>
-        <td className="p-2 text-center">
+        {/* <td className="p-2 text-center">
           {moment(vendor.createdAt).format("lll")}
         </td>
         <td className="p-2 text-center">
           {moment(vendor.updatedAt).format("lll")}
-        </td>
+        </td> */}
         <td className="p-2 flex items-center justify-center">
           <span
             onClick={(e) => editVendor(vendor._id, vendor, true)}
@@ -180,7 +179,7 @@ const VendorTable = ({ vendor, deleteVendor, editVendor }) => {
             </svg>
           </span>
           <span
-            onClick={(e) => deleteVendor(vendor._id)}
+            onClick={(e) => deleteVendor(vendor._id,  vendor,  true)}
             className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
           >
             <svg

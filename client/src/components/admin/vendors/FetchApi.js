@@ -15,40 +15,17 @@ const Headers = () => {
 
 export const getAllVendor = async () => {
     try {
-        let res = await axios.get(`${apiURL}/api/vendor/all-vendor`, Headers());
+        let res = await axios.get(`${apiURL}/api/vendor/all`, Headers());
         return res.data;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const createVendor = async ({
-    vendorName,
-    email,
-    address,
-    status,
-    gstNo,
-    mobileNo,
-    alternateMobileNo,
-    createdAt,
-    comments
-}) => {
-    let formData = new FormData();
-    formData.append("vendorName", vendorName);
-    formData.append("email", email);
-    formData.append("address", address);
-    formData.append("status", status);
-    formData.append("gstNo", gstNo);
-    formData.append("mobileNo", mobileNo);
-    formData.append("alternateMobileNo", alternateMobileNo);
-    formData.append("createdAt", createdAt);
-    formData.append("comments", comments);
+export const createVendor = async (data) => {
     try {
-        let result = await axios.post(
-            `${apiURL}/api/vendor/create-vendor`,
-            formData,
-            Headers()
-        );
+        let result = await axios.post(`${apiURL}/api/vendor`, data, Headers());
+        console.log(result);
         return result.data;
     } catch (error) {
         console.log(error)
@@ -66,18 +43,23 @@ export const editVendor = async ({
     alternateMobileNo,
     comments
 }) => {
-    let data = { id: id, vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo, comments:comments };
+    let data = { vendorName: vendorName, email: email, address: address, status: status, gstNo: gstNo, mobileNo: mobileNo, alternateMobileNo: alternateMobileNo, comments: comments };
     try {
-        let result = await axios.put(`${apiURL}/api/vendor/edit-vendor`, data, Headers());
+        let result = await axios.put(`${apiURL}/api/vendor/${id}`, data, Headers());
         return result.data;
     } catch (error) {
         console.log(error);
     }
 }
 
-export const deleteVendorById = async (id) => {
+export const deleteVendorById = async ({
+    id,
+    comments,
+    status
+}) => {
+    let data =  {comments: comments,  status: status}
     try {
-        let result = await axios.delete(`${apiURL}/api/vendor/delete-vendorById`, { id }, Headers());
+        let result = await axios.put(`${apiURL}/api/vendor/status/${id}`, data, Headers());
         return result.data;
     } catch (error) {
         console.log(error);
@@ -86,7 +68,7 @@ export const deleteVendorById = async (id) => {
 
 export const getVendorById = async (id) => {
     try {
-        let result  = await axios.get(`${apiURL}/api/vendor/byId`, {id}, Headers());
+        let result  = await axios.get(`${apiURL}/api/vendor/by-id/${id}`, Headers());
         return result.data;
     } catch (error) {
         console.log(error);

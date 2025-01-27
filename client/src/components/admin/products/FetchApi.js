@@ -25,6 +25,7 @@ export const createProduct = async ({
   pImage,
   pStatus,
   pCategory,
+  pVendor,
   pQuantity,
   pPrice,
   pOffer,
@@ -39,6 +40,7 @@ export const createProduct = async ({
   formData.append("pDescription", pDescription);
   formData.append("pStatus", pStatus);
   formData.append("pCategory", pCategory);
+  formData.append("pVendor", pVendor);
   formData.append("pQuantity", pQuantity);
   formData.append("pPrice", pPrice);
   formData.append("pOffer", pOffer);
@@ -52,7 +54,6 @@ export const createProduct = async ({
 };
 
 export const editProduct = async (product) => {
-  console.log(product);
   /* Most important part for updating multiple image  */
   let formData = new FormData();
   if (product.pEditImages) {
@@ -66,6 +67,7 @@ export const editProduct = async (product) => {
   formData.append("pDescription", product.pDescription);
   formData.append("pStatus", product.pStatus);
   formData.append("pCategory", product.pCategory._id);
+  formData.append("pVendor", product.pVendor._id);
   formData.append("pQuantity", product.pQuantity);
   formData.append("pPrice", product.pPrice);
   formData.append("pOffer", product.pOffer);
@@ -81,7 +83,7 @@ export const editProduct = async (product) => {
 
 export const deleteProduct = async (pId) => {
   try {
-    let res = await axios.post(`${apiURL}/api/product/delete-product`, { pId });
+    let res = await axios.post(`${apiURL}/api/product/delete`, { pId });
     return res.data;
   } catch (error) {
     console.log(error);

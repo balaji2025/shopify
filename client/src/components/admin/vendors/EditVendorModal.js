@@ -1,83 +1,78 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { VendorContext } from "./index";
-import { getAllVendor, createVendor } from "./FetchApi";
+import { editVendor, getAllVendor } from "./FetchApi";
 
-
-const AddVendorDetail = (props) => {
+const EditVendorModal = (props) => {
   const { data, dispatch } = useContext(VendorContext);
 
   const alert = (msg, type) => (
     <div className={`bg-${type}-200 py-2 px-4 w-full`}>{msg}</div>
   );
 
-  const [fData, setFdata] = useState({
+  const [editformData, setEditformdata] = useState({
+    id: "",
     vendorName: "",
     email: "",
     address: "",
-    status: "Active",
+    status: "",
     gstNo: "",
     mobileNo: "",
     alternateMobileNo: "",
-    createdAt: "",
-    updatedAt: "",
     comments: "",
-    success: false,
     error: false,
+    success: false,
   });
 
-  const fetchData = async () => {
+  const fetchVendorData = async () => {
     let responseData = await getAllVendor();
-    setTimeout(() => {
-      if (responseData && responseData) {
-        dispatch({
-          type: "fetchVendorsAndChangeState",
-          payload: responseData,
-        });
-      }
-    }, 1000);
+    if (responseData) {
+      dispatch({
+        type: "fetchVendorsAndChangeState",
+        payload: responseData,
+      });
+    }
   };
+
+  useEffect(() => {
+    fetchVendorData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setEditformdata({
+      id: data.editVendorModal.id,
+      vendorName: data.editVendorModal.vendorName,
+      email: data.editVendorModal.email,
+      address: data.editVendorModal.address,
+      status: data.editVendorModal.status,
+      gstNo: data.editVendorModal.gstNo,
+      mobileNo: data.editVendorModal.mobileNo,
+      alternateMobileNo: data.editVendorModal.alternateMobileNo,
+      comments: data.editVendorModal.comments,
+    });
+  }, [data.editVendorModal]);
 
   const submitForm = async (e) => {
     e.preventDefault();
-    e.target.reset();
-
     try {
-      let responseData = await createVendor(fData);
+      let responseData = await editVendor(editformData);
       if (responseData.success) {
-        fetchData();
-        setFdata({
-          ...fData,
-          vendorName: "",
-          email: "",
-          address: "",
-          status: "Active",
-          gstNo: "",
-          mobileNo: "",
-          alternateMobileNo: "",
-          comments: "",
-          success: responseData.success,
-          error: false,
-        });
-        dispatch({ type: "loading", payload: false });
+        fetchVendorData();
+        setEditformdata({ ...editformData, success: responseData.success });
         setTimeout(() => {
-          setFdata({
-            ...fData,
-            vendorName: "",
-            email: "",
-            address: "",
-            status: "Active",
-            gstNo: "",
-            mobileNo: "",
-            alternateMobileNo: "",
-            comments: "",
-            success: false,
-            error: false,
+          return setEditformdata({
+            ...editformData,
+            success: responseData.success,
           });
         }, 2000);
       } else if (responseData.error) {
-        setFdata({ ...fData, success: false, error: responseData.error });
+        setEditformdata({ ...editformData, error: responseData.error });
         setTimeout(() => {
-          return setFdata({ ...fData, error: false, success: false });
+          return setEditformdata({
+            ...editformData,
+            error: responseData.error,
+          });
         }, 2000);
       }
     } catch (error) {
@@ -89,27 +84,31 @@ const AddVendorDetail = (props) => {
     <Fragment>
       {/* Black Overlay */}
       <div
-        onClick={(e) => dispatch({ type: "addVendorModal", payload: false })}
-        className={`${data.addVendorModal ? "" : "hidden"
-          } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
+        onClick={(e) =>
+          dispatch({ type: "editVendorModalClose", payload: false })
+        }
+        className={`${
+          data.editVendorModal.modal ? "" : "hidden"
+        } fixed top-0 left-0 z-30 w-full h-full bg-black opacity-50`}
       />
       {/* End Black Overlay */}
 
       {/* Modal Start */}
       <div
-        className={`${data.addVendorModal ? "" : "hidden"
-          } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
+        className={`${
+          data.editVendorModal.modal ? "" : "hidden"
+        } fixed inset-0 flex items-center z-30 justify-center overflow-auto`}
       >
         <div className="mt-32 md:mt-0 relative bg-white w-11/12 md:w-3/6 shadow-lg flex flex-col items-center space-y-4 px-4 py-4 md:px-8">
           <div className="flex items-center justify-between w-full pt-4">
             <span className="text-left font-semibold text-2xl tracking-wider">
-              Add Vendor
+              Edit vendor
             </span>
             {/* Close Modal */}
             <span
               style={{ background: "#303031" }}
               onClick={(e) =>
-                dispatch({ type: "addVendorModal", payload: false })
+                dispatch({ type: "editVendorModalClose", payload: false })
               }
               className="cursor-pointer text-gray-100 py-2 px-2 rounded-full"
             >
@@ -129,17 +128,17 @@ const AddVendorDetail = (props) => {
               </svg>
             </span>
           </div>
-          {fData.error ? alert(fData.error, "red") : ""}
-          {fData.success ? alert(fData.success, "green") : ""}
+          {editformData.error ? alert(editformData.error, "red") : ""}
+          {editformData.success ? alert(editformData.success, "green") : ""}
           <form className="w-full" onSubmit={(e) => submitForm(e)}>
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
                 <label htmlFor="vendorName">Vendor Name *</label>
                 <input
-                  value={fData.vendorName}
+                  value={editformData.vendorName}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       vendorName: e.target.value,
@@ -152,10 +151,10 @@ const AddVendorDetail = (props) => {
               <div className="w-1/2 flex flex-col space-y-1 space-x-1">
                 <label htmlFor="email">Email *</label>
                 <input
-                  value={fData.email}
+                  value={editformData.email}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       email: e.target.value,
@@ -170,10 +169,10 @@ const AddVendorDetail = (props) => {
             <div className="flex flex-col space-y-2">
               <label htmlFor="address">Address *</label>
               <textarea
-                value={fData.address}
+                value={editformData.address}
                 onChange={(e) =>
-                  setFdata({
-                    ...fData,
+                  setEditformdata({
+                    ...editformData,
                     error: false,
                     success: false,
                     address: e.target.value,
@@ -190,10 +189,10 @@ const AddVendorDetail = (props) => {
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="status">Status *</label>
                 <select
-                  value={fData.status}
+                  value={editformData.status}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       status: e.target.value,
@@ -214,10 +213,10 @@ const AddVendorDetail = (props) => {
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="gstNo">GstNo *</label>
                 <input
-                  value={fData.gstNo}
+                  value={editformData.gstNo}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       gstNo: e.target.value,
@@ -235,10 +234,10 @@ const AddVendorDetail = (props) => {
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="mobileNo">MobileNo *</label>
                 <input
-                  value={fData.mobileNo}
+                  value={editformData.mobileNo}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       mobileNo: e.target.value,
@@ -252,16 +251,16 @@ const AddVendorDetail = (props) => {
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="comments">Comments *</label>
                 <textarea
-                  value={fData.comments}
+                  value={editformData.comments}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       comments: e.target.value,
                     })
                   }
-                  type="number"
+                  type="string"
                   className="px-4 py-2 border focus:outline-none"
                   id="offer"
                 />
@@ -271,10 +270,10 @@ const AddVendorDetail = (props) => {
               <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="alternateMobileNo">AlternateMobileNo *</label>
                 <input
-                  value={fData.alternateMobileNo}
+                  value={editformData.alternateMobileNo}
                   onChange={(e) =>
-                    setFdata({
-                      ...fData,
+                    setEditformdata({
+                      ...editformData,
                       error: false,
                       success: false,
                       alternateMobileNo: e.target.value,
@@ -292,7 +291,7 @@ const AddVendorDetail = (props) => {
                 type="submit"
                 className="rounded-full bg-gray-800 text-gray-100 text-lg font-medium py-2"
               >
-                Create vendor
+                Save vendor
               </button>
             </div>
           </form>
@@ -302,25 +301,4 @@ const AddVendorDetail = (props) => {
   );
 };
 
-const AddVendorModal = (props) => {
-  useEffect(() => {
-    fetchVendorData();
-  }, []);
-
-  const [allCat, setAllCat] = useState({});
-
-  const fetchVendorData = async () => {
-    let responseData = await getAllVendor();
-    if (responseData) {
-      setAllCat(responseData);
-    }
-  };
-
-  return (
-    <Fragment>
-      <AddVendorDetail vendors={allCat} />
-    </Fragment>
-  );
-};
-
-export default AddVendorModal;
+export default EditVendorModal;

@@ -46,23 +46,23 @@ export const pay = async (
     setState({ ...state, error: "Please provide your phone number" });
   } else {
     let nonce;
-    state.instance
-      .requestPaymentMethod()
-      .then((data) => {
+    // state.instance
+      // .requestPaymentMethod()
+      // .then((data) => {
         dispatch({ type: "loading", payload: true });
-        nonce = data.nonce;
+        nonce = 'test';
         let paymentData = {
           amountTotal: totalCost(),
           paymentMethod: nonce,
         };
-        getPaymentProcess(paymentData)
-          .then(async (res) => {
-            if (res) {
+        // getPaymentProcess(paymentData)
+          // .then(async (res) => {
+            if (true) {
               let orderData = {
                 allProduct: JSON.parse(localStorage.getItem("cart")),
                 user: JSON.parse(localStorage.getItem("jwt")).user._id,
-                amount: res.transaction.amount,
-                transactionId: res.transaction.id,
+                amount: totalCost(),
+                transactionId: 123456,
                 address: state.address,
                 phone: state.phone,
               };
@@ -83,14 +83,14 @@ export const pay = async (
                 console.log(error);
               }
             }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        setState({ ...state, error: error.message });
-      });
+          // })
+          // .catch((err) => {
+          //   console.log(err);
+          // });
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      //   setState({ ...state, error: error.message });
+      // });
   }
 };

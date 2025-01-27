@@ -2,8 +2,9 @@ import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ProductContext } from "./index";
 import { createProduct, getAllProduct } from "./FetchApi";
 import { getAllCategory } from "../categories/FetchApi";
+import { getAllVendor } from "../vendors/FetchApi";
 
-const AddProductDetail = ({ categories }) => {
+const AddProductDetail = ({ categories, vendors }) => {
   const { data, dispatch } = useContext(ProductContext);
 
   const alert = (msg, type) => (
@@ -189,7 +190,7 @@ const AddProductDetail = ({ categories }) => {
                   })
                 }
                 className="px-4 py-2 border focus:outline-none"
-                name="description"jr
+                name="description"
                 id="description"
                 cols={5}
                 rows={2}
@@ -274,6 +275,38 @@ const AddProductDetail = ({ categories }) => {
             </div>
             <div className="flex space-x-1 py-4">
               <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="quantity">Product Vendor *</label>
+                <select
+                  value={fData.pVendor}
+                  onChange={(e) =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      pVendor: e.target.value,
+                    })
+                  }
+                  name="status"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="status"
+                >
+                  <option disabled value="">
+                    Select a vendor
+                  </option>
+                  {vendors.length > 0
+                    ? vendors.map(function (elem) {
+                        return (
+                          <option name="status" value={elem._id} key={elem._id}>
+                            {elem.vendorName}
+                          </option>
+                        );
+                      })
+                    : ""}
+                </select>
+              </div>
+            </div>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
                 <label htmlFor="quantity">Product in Stock *</label>
                 <input
                   value={fData.pQuantity}
@@ -327,9 +360,11 @@ const AddProductDetail = ({ categories }) => {
 const AddProductModal = (props) => {
   useEffect(() => {
     fetchCategoryData();
+    fetchVendorData();
   }, []);
 
   const [allCat, setAllCat] = useState({});
+  const [allVendor, setAllVendor] = useState({});
 
   const fetchCategoryData = async () => {
     let responseData = await getAllCategory();
@@ -338,9 +373,17 @@ const AddProductModal = (props) => {
     }
   };
 
+  const fetchVendorData = async () => {
+    let responseData = await getAllVendor();
+    console.log(responseData);
+    // if  (responseData && responseData.status === "Active") {
+      setAllVendor(responseData);
+    // }
+  };
+
   return (
     <Fragment>
-      <AddProductDetail categories={allCat} />
+      <AddProductDetail categories={allCat} vendors={allVendor} />
     </Fragment>
   );
 };

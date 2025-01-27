@@ -1,13 +1,12 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import moment from "moment";
-
 import { VendorContext } from "./index";
 import { fetchData, editVendorReq, deleteVendorReq } from "./Actions";
-import AllVendor from "./vendorTable";
+import AllVendor from "./VendorTable";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
-const AllCategory = (props) => {
+const AllVendors = (props) => {
   const { data, dispatch } = useContext(OrderContext);
   const { orders, loading } = data;
 
@@ -88,7 +87,7 @@ const AllCategory = (props) => {
 };
 
 /* Single Category Component */
-const vendorTable = ({ vendor, editVendor }) => {
+const VendorTable = ({ vendor, editVendor }) => {
   const { dispatch } = useContext(VendorContext);
 
   return (
