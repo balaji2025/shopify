@@ -26,6 +26,8 @@ export const createProduct = async ({
   pStatus,
   pCategory,
   pVendor,
+  mfdDate,
+  expDate,
   pQuantity,
   pPrice,
   pOffer,
@@ -41,6 +43,8 @@ export const createProduct = async ({
   formData.append("pStatus", pStatus);
   formData.append("pCategory", pCategory);
   formData.append("pVendor", pVendor);
+  formData.append("mfdDate", mfdDate);
+  formData.append("expDate", expDate)
   formData.append("pQuantity", pQuantity);
   formData.append("pPrice", pPrice);
   formData.append("pOffer", pOffer);

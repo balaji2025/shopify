@@ -31,6 +31,14 @@ const productSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "vendor",
     },
+    mfdDate: {
+      type: Date,
+      required: true,
+    },
+    expDate: {
+      type: Date,
+      required: true,
+    },
     pImages: {
       type: Array,
       required: true,

@@ -341,6 +341,42 @@ const AddProductDetail = ({ categories, vendors }) => {
                 />
               </div>
             </div>
+            <div className="flex space-x-1 py-4">
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="mfdDate">Manufacture Date *</label>
+                <input
+                  value={fData.mfdDate}
+                  onChange={(e) =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      mfdDate: e.target.value,
+                    })
+                  }
+                  type="date"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="mfdDate"
+                />
+              </div>
+              <div className="w-1/2 flex flex-col space-y-1">
+                <label htmlFor="expDate">Expiry Date *</label>
+                <input
+                  value={fData.expDate}
+                  onChange={(e) =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      expDate: e.target.value,
+                    })
+                  }
+                  type="date"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="expDate"
+                />
+              </div>
+            </div>
             <div className="flex flex-col space-y-1 w-full pb-4 md:pb-6 mt-4">
               <button
                 style={{ background: "#303031" }}

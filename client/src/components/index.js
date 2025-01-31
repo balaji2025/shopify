@@ -12,8 +12,10 @@ import {
 } from "./shop";
 import { DashboardAdmin, Categories, Products, Orders, Vendors } from "./admin";
 import { UserProfile, UserOrders, SettingUser } from "./shop/dashboardUser";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// import InvoiceModal from "./admin/billing/InvoiceModal";
+// import InvoiceForm from "./admin/billing/InvoiceForm";
+import BillingComponent from "./admin/billing";
 
 /* Routing All page will be here */
 const Routes = (props) => {
@@ -61,6 +63,11 @@ const Routes = (props) => {
           exact={true}
           path="/admin/dashboard/vendors"
           component={Vendors}
+        />
+        <AdminProtectedRoute
+          exact={true}
+          path="/admin/dashboard/billing"
+          component={BillingComponent}
         />
         {/* Admin Routes End */}
 
