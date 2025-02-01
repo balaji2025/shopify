@@ -13,6 +13,7 @@ const InvoiceItem = ({
   currency,
   onRowDel,
   onRowAdd,
+  setItemFromAutomatic
 }) => {
   const [products, setProducts] = useState([]);
 
@@ -24,7 +25,7 @@ const InvoiceItem = ({
     let responseData = await getAllProduct();
     if (responseData && responseData.Products) {
       setProducts(responseData.Products);
-      console.log(responseData);
+      // console.log(responseData);
     }
   };
 
@@ -42,12 +43,13 @@ const InvoiceItem = ({
         <tbody>
           {items.map((item) => (
             <ItemRow
-              key={item._id}
+              key={item.id}
               item={item}
               onItemizedItemEdit={onItemizedItemEdit}
               onDelEvent={onRowDel}
               currency={currency}
               products={products} // ✅ Passing products list to ItemRow
+              setItemFromAutomatic={setItemFromAutomatic}
             />
           ))}
         </tbody>
@@ -59,31 +61,56 @@ const InvoiceItem = ({
   );
 };
 
-const ItemRow = ({ item, onItemizedItemEdit, onDelEvent, currency, products }) => {
+const ItemRow = ({ item, onItemizedItemEdit, onDelEvent, currency, products, setItemFromAutomatic }) => {
   const productOptions = products.map((product) => ({
-    value: product._id,
+    id: product._id,
     label: product.pName,
-    description: product.pDescription, // Used to auto-fill description
+    description: product.pDescription,
+    price: product.pPrice
+    // Used to auto-fill description
   }));
 
+  // console.log("*******",productOptions.id);
+  // products.map((e)=> {p
+
+  //   console.log("productId*****", e._id);
+  // })
+
   const handleProductChange = (selectedOption) => {
-    onItemizedItemEdit({
-      id: item._id,
-      name: "name",
-      value: selectedOption.pName, // Set selected product name
-    });
+    setItemFromAutomatic({
+      id: item.id,
+      name: selectedOption.label,
+      description: selectedOption.description,
+      price: selectedOption.price,
+      quantity: 1,
+      productId: selectedOption.id
+    })
+    // onItemizedItemEdit({
+    //   target: {
+    //     id: item.id,
+    //     productId: selectedOption.id,
+    //     name: "name",
+    //     value: selectedOption.label, // Set selected product name
+    //   }
+    // });
 
-    onItemizedItemEdit({
-      id: item._id,
-      name: "description",
-      value: selectedOption.pDescription, // Auto-fill description
-    });
+    // onItemizedItemEdit({
+    //   target: {
+    //     id: item.id,
+    //     productId: selectedOption.id,
+    //     name: "price",
+    //     value: selectedOption.price, // Auto-fill description
+    //   }
+    // });
 
-    onItemizedItemEdit({
-      id: item._id,
-      name: "price",
-      value: selectedOption.pPrice, // Auto-fill description
-    });
+    // onItemizedItemEdit({
+    //   target: {
+    //     id: item.id,
+    //     productId: selectedOption.id,
+    //     name: "description",
+    //     value: selectedOption.description, // Auto-fill description
+    //   }
+    // });
   };
 
   return (
@@ -103,8 +130,8 @@ const ItemRow = ({ item, onItemizedItemEdit, onDelEvent, currency, products }) =
             type: "text",
             name: "description",
             placeholder: "Item description",
-            value: item.pDescription,
-            id: item._id,
+            value: item.description,
+            id: item.id,
           }}
         />
       </td>
@@ -117,7 +144,7 @@ const ItemRow = ({ item, onItemizedItemEdit, onDelEvent, currency, products }) =
             min: 1,
             step: "1",
             value: item.quantity,
-            id: item._id,
+            id: item.id,
           }}
         />
       </td>
@@ -132,8 +159,8 @@ const ItemRow = ({ item, onItemizedItemEdit, onDelEvent, currency, products }) =
             step: "0.01",
             precision: 2,
             textAlign: "text-end",
-            value: item.pPrice,
-            id: item._id,
+            value: item.price,
+            id: item.id,
           }}
         />
       </td>

@@ -41,6 +41,7 @@ const InvoiceForm = () => {
       description: "",
       price: "1.00",
       quantity: 1,
+      productId: null
     },
   ]);
 
@@ -67,10 +68,22 @@ const InvoiceForm = () => {
 
   useEffect(() => {
     handleCalculateTotal();
+    // const generateInvoiceNumber = () => {
+    //   const date = new Date();
+    //   const uniqueNumber = `INV-${date.getFullYear()}${(date.getMonth() + 1)
+    //     .toString()
+    //     .padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}-${Math.floor(
+    //     1000 + Math.random() * 9000
+    //   )}`;
+    //   return uniqueNumber;
+    // };
+
+    // // Set the generated invoice number
+    // setInvoiceNumber(generateInvoiceNumber());
   }, [handleCalculateTotal]);
 
   const handleRowDel = (item) => {
-    const updatedItems = items.filter((i) => i._id !== item._id);
+    const updatedItems = items.filter((i) => i.id !== item.id);
     setItems(updatedItems);
   };
 
@@ -96,6 +109,13 @@ const InvoiceForm = () => {
     );
     setItems(updatedItems);
   };
+
+  const setItemFromAutomatic = (autoUpdatedItem) => {
+    const updatedItems = items.map((item) =>
+      item.id === autoUpdatedItem.id ? autoUpdatedItem : item
+    );
+    setItems(updatedItems);
+  }
 
   const handleChange = (setter) => (event) => {
     setter(event.target.value);
@@ -227,6 +247,7 @@ const InvoiceForm = () => {
               onRowDel={handleRowDel}
               currency={currency}
               items={items}
+              setItemFromAutomatic={setItemFromAutomatic}
             />
             <Row className="mt-4 justify-content-end">
               <Col lg={6}>
