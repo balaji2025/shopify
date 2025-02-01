@@ -45,16 +45,16 @@ export const pay = async (
   } else if (!state.phone) {
     setState({ ...state, error: "Please provide your phone number" });
   } else {
-    let nonce;
+    // let nonce;
     // state.instance
       // .requestPaymentMethod()
       // .then((data) => {
-        dispatch({ type: "loading", payload: true });
-        nonce = 'test';
-        let paymentData = {
-          amountTotal: totalCost(),
-          paymentMethod: nonce,
-        };
+        // dispatch({ type: "loading", payload: true });
+        // nonce = 'test';
+        // let paymentData = {
+        //   amountTotal: totalCost(),
+        //   paymentMethod: nonce,
+        // };
         // getPaymentProcess(paymentData)
           // .then(async (res) => {
             if (true) {

@@ -49,7 +49,7 @@ class Product {
   }
 
   async postAddProduct(req, res) {
-    let { pName, pDescription, pPrice, pQuantity, pCategory, pVendor, pOffer, pStatus } = req.body;
+    let { pName, pDescription, pPrice, pQuantity, pCategory, pVendor, mfdDate, expDate, pOffer, pStatus } = req.body;
     let images = req.files;
     // Validation
     try {
@@ -75,6 +75,8 @@ class Product {
         !pQuantity || 
         !pCategory || 
         !pVendor || 
+        !mfdDate ||
+        !expDate ||
         !pOffer || 
         !pStatus
       ) {
@@ -108,6 +110,8 @@ class Product {
         pQuantity,
         pCategory,
         pVendor,
+        mfdDate,
+        expDate,
         pOffer,
         pStatus,
       });
@@ -128,6 +132,8 @@ class Product {
       pQuantity,
       pCategory,
       pVendor,
+      mfdDate,
+      expDate,
       pOffer,
       pStatus,
       pImages,
@@ -143,6 +149,8 @@ class Product {
       !pQuantity |
       !pCategory |
       !pVendor |
+      !mfdDate |
+      !expDate |
       !pOffer |
       !pStatus
     ) {
@@ -166,6 +174,8 @@ class Product {
         pQuantity,
         pCategory,
         pVendor,
+        mfdDate,
+        expDate,  
         pOffer,
         pStatus,
       };
