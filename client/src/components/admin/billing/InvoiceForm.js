@@ -16,7 +16,7 @@ const InvoiceForm = () => {
   const [currentDate] = useState(
     new Date().toLocaleDateString()
   );
-  const [invoiceNumber, setInvoiceNumber] = useState(1);
+  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [dateOfIssue, setDateOfIssue] = useState("");
   const [billTo, setBillTo] = useState("");
   const [billToEmail, setBillToEmail] = useState("");
@@ -66,21 +66,23 @@ const InvoiceForm = () => {
     setTotal(newTotal);
   }, [items, taxRate, discountRate]);
 
+  const generateInvoiceNumber = useCallback(() => {
+    const date = new Date();
+    const uniqueNumber = `INV-${date.getFullYear()}${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}-${Math.floor(
+      1000 + Math.random() * 9000
+    )}`;
+    return uniqueNumber;
+  }, []);
+  
   useEffect(() => {
     handleCalculateTotal();
-    // const generateInvoiceNumber = () => {
-    //   const date = new Date();
-    //   const uniqueNumber = `INV-${date.getFullYear()}${(date.getMonth() + 1)
-    //     .toString()
-    //     .padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}-${Math.floor(
-    //     1000 + Math.random() * 9000
-    //   )}`;
-    //   return uniqueNumber;
-    // };
 
+    setInvoiceNumber(generateInvoiceNumber());
+    console.log(setInvoiceNumber);
     // // Set the generated invoice number
-    // setInvoiceNumber(generateInvoiceNumber());
-  }, [handleCalculateTotal]);
+  }, [handleCalculateTotal, generateInvoiceNumber]);
 
   const handleRowDel = (item) => {
     const updatedItems = items.filter((i) => i.id !== item.id);
@@ -163,9 +165,8 @@ const InvoiceForm = () => {
                   type="number"
                   value={invoiceNumber}
                   name="invoiceNumber"
-                  onChange={handleChange(setInvoiceNumber)}
-                  min="1"
-                  style={{ maxWidth: "70px" }}
+                  readOnly
+                  style={{ maxWidth: "150px" }}
                   required
                 />
               </div>

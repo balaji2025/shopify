@@ -97,8 +97,8 @@ const AllProduct = (props) => {
               <th className="px-4 py-2 border">Category</th>
               <th className="px-4 py-2 border">Vendor</th>
               <th className="px-4 py-2 border">Offer</th>
-              <th className="px-4 py-2 border">Created at</th>
-              <th className="px-4 py-2 border">Updated at</th>
+              <th className="px-4 py-2 border">Manufacture Date</th>
+              <th className="px-4 py-2 border">Expiry Date</th>
               <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
@@ -172,10 +172,10 @@ const ProductTable = ({ product, deleteProduct, editProduct }) => {
         <td className="p-2 text-center">{product.pVendor.vendorName}</td>
         <td className="p-2 text-center">{product.pOffer}</td>
         <td className="p-2 text-center">
-          {moment(product.createdAt).format("lll")}
+          {moment(product.mfdDate).format("lll")}
         </td>
         <td className="p-2 text-center">
-          {moment(product.updatedAt).format("lll")}
+          {moment(product.expDate).format("lll")}
         </td>
         <td className="p-2 flex items-center justify-center">
           <span

@@ -132,8 +132,8 @@ class Product {
       pQuantity,
       pCategory,
       pVendor,
-      mfdDate,
-      expDate,
+      // // mfdDate,
+      // expDate,
       pOffer,
       pStatus,
       pImages,
@@ -149,8 +149,8 @@ class Product {
       !pQuantity |
       !pCategory |
       !pVendor |
-      !mfdDate |
-      !expDate |
+      // !mfdDate |
+      // !expDate |
       !pOffer |
       !pStatus
     ) {
@@ -174,8 +174,8 @@ class Product {
         pQuantity,
         pCategory,
         pVendor,
-        mfdDate,
-        expDate,  
+        // mfdDate,
+        // expDate,  
         pOffer,
         pStatus,
       };

@@ -33,11 +33,10 @@ const orderRouter = require("./routes/orders");
 const usersRouter = require("./routes/users");
 const customizeRouter = require("./routes/customize");
 const vendorRouter = require("./routes/vendor");
+const organizationRouter  = require("./routes/organization");
 // Import Auth middleware for check user login or not~
 const { loginCheck } = require("./middleware/auth");
 const CreateAllFolder = require("./config/uploadFolderCreateScript");
-// const vendor = require("./controller/vendor");
-
 /* Create All Uploads Folder if not exists | For Uploading Images */
 CreateAllFolder();
 
@@ -72,6 +71,7 @@ app.use("/api", brainTreeRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/customize", customizeRouter);
 app.use("/api/vendor", vendorRouter);
+app.use("/api/org", organizationRouter);
 
 // Run Server
 const PORT = process.env.PORT || 8000;
