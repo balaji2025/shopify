@@ -162,7 +162,7 @@ const InvoiceForm = () => {
               <div className="d-flex flex-row align-items-center">
                 <span className="fw-bold me-2">Invoice&nbsp;Number:&nbsp;</span>
                 <Form.Control
-                  type="number"
+                  type="string"
                   value={invoiceNumber}
                   name="invoiceNumber"
                   readOnly
